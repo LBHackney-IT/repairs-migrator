@@ -11,10 +11,10 @@ namespace Core
 
         internal Pipeline(IEnumerable<IPipelineStage> stages) => this.stages = stages;
 
-        public async Task<TOut> Run<TIn>(TIn testInModel)
+        public async Task<TOut> Run<TIn>(TIn model)
             where TIn : class
         {
-            var bag = PropertyBag.From(testInModel);
+            var bag = PropertyBag.From(model);
 
             foreach (var stage in stages)
             {
@@ -22,6 +22,19 @@ namespace Core
             }
 
             return bag.To<TOut>();
+        }
+
+        public async Task<IEnumerable<TOut>> Run<TIn>(IEnumerable<TIn> models)
+            where TIn : class
+        {
+            List<TOut> outs = new List<TOut>();
+
+            foreach (var model in models)
+            {
+                outs.Add(await Run(model));
+            }
+
+            return outs;
         }
     }
 }

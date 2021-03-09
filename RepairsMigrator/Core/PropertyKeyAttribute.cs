@@ -12,4 +12,7 @@ namespace Core
             Key = key;
         }
     }
+
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class MapPropNameAttribute : Attribute { }
 }

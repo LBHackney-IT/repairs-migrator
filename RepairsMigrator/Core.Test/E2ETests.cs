@@ -64,7 +64,7 @@ namespace Core.Test
 
     public static class Keys
     {
-        public const string FromStage = "Value";
+        public const string FromStage = "FromStage";
         public const string Input = "Input";
     }
 }
