@@ -2,7 +2,7 @@ using FluentAssertions;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace RepairsMigrator.Test
+namespace Core.Test
 {
     public class E2ETests
     {

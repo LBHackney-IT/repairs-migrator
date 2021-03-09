@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RepairsMigrator
+namespace Core
 {
     public class PropertyBag : Dictionary<string, object>
     {

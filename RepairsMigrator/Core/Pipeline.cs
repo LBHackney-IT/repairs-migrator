@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RepairsMigrator
+namespace Core
 {
     public class Pipeline<TOut>
         where TOut : class, new()

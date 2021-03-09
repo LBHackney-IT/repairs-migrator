@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace RepairsMigrator
+namespace Core
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class PropertyKeyAttribute : Attribute
     {
         public string Key { get; }
