@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,9 +16,9 @@ namespace Core.Test
                 .With(new ValidateStage<ErrorTestInModel>())
                 .Build<ErrorTestOutModel>();
 
-            var output = await pipeline.Run(new ErrorTestInModel());
+            var output = await pipeline.Run(Helpers.List(new ErrorTestInModel()));
 
-            output.Errors.Should().Contain(e => e == "property must have value");
+            output.Single().Errors.Should().Contain(e => e == "property must have value");
         }
 
         [Fact]
@@ -27,9 +28,9 @@ namespace Core.Test
                 .With(new ValidateStage<ErrorTestInModel>())
                 .Build<ErrorTestOutModel>();
 
-            var output = await pipeline.Run(new ErrorTestInModel() { Value = "a value" });
+            var output = await pipeline.Run(Helpers.List(new ErrorTestInModel() { Value = "a value" }));
 
-            output.Errors.Should().BeEmpty();
+            output.Single().Errors.Should().BeEmpty();
         }
     }
 

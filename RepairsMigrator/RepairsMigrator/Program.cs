@@ -25,7 +25,6 @@ namespace RepairsMigrator
             W("Writing Output");
             CSVSaver.SaveCsv("out.csv", output);
             W("Finished");
-            Console.ReadLine();
         }
 
         private static async Task<IEnumerable<TargetOutputSheet>> LoadAndRun<TIn>(string path)
@@ -37,7 +36,7 @@ namespace RepairsMigrator
             var pipeline = BuildPipeline();
 
             W("Running Pipeline");
-            return await pipeline.RunBatch(dloIn);
+            return await pipeline.Run(dloIn);
         }
 
         private static Pipeline<TargetOutputSheet> BuildPipeline()

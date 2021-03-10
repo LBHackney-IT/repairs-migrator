@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Core
@@ -7,34 +8,21 @@ namespace Core
     public class Pipeline<TOut>
         where TOut : class, new()
     {
-        private readonly IEnumerable<IPipelineStage> stages;
+        private readonly IEnumerable<IBatchPipelineStage> stages;
 
-        internal Pipeline(IEnumerable<IPipelineStage> stages) => this.stages = stages;
+        internal Pipeline(IEnumerable<IBatchPipelineStage> stages) => this.stages = stages;
 
-        public async Task<TOut> Run<TIn>(TIn model)
+        public async Task<IEnumerable<TOut>> Run<TIn>(IEnumerable<TIn> models)
             where TIn : class
         {
-            var bag = PropertyBag.From(model);
+            var bags = models.Select(m => PropertyBag.From(m)).ToList();
 
             foreach (var stage in stages)
             {
-                await stage.Process(bag);
+                await stage.Process(bags);
             }
 
-            return bag.To<TOut>();
-        }
-
-        public async Task<IEnumerable<TOut>> RunBatch<TIn>(IEnumerable<TIn> models)
-            where TIn : class
-        {
-            List<TOut> outs = new List<TOut>();
-
-            foreach (var model in models)
-            {
-                outs.Add(await Run(model));
-            }
-
-            return outs;
+            return bags.Select(b => b.To<TOut>()).ToList();
         }
     }
 }

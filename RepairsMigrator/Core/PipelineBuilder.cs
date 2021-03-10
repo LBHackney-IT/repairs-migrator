@@ -4,14 +4,21 @@ namespace Core
 {
     public class PipelineBuilder
     {
-        private readonly IList<IPipelineStage> stages;
+        private readonly IList<IBatchPipelineStage> stages;
 
         public PipelineBuilder()
         {
-            stages = new List<IPipelineStage>();
+            stages = new List<IBatchPipelineStage>();
         }
 
         public PipelineBuilder With(IPipelineStage stage)
+        {
+            this.stages.Add(new BatchWrapper(stage));
+            return this;
+        }
+
+
+        public PipelineBuilder With(IBatchPipelineStage stage)
         {
             this.stages.Add(stage);
             return this;

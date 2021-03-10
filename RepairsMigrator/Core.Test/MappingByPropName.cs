@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -13,12 +14,12 @@ namespace Core.Test
             var pipeline = new PipelineBuilder()
                 .Build<PropNameTestOutModel>();
 
-            var output = await pipeline.Run(new PropNameTestInModel
+            var output = await pipeline.Run(Helpers.List(new PropNameTestInModel
             {
                 Value = valueFromInputModel
-            });
+            }));
 
-            output.Value.Should().Be(valueFromInputModel);
+            output.Single().Value.Should().Be(valueFromInputModel);
         }
     }
 

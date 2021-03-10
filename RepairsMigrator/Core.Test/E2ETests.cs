@@ -1,4 +1,5 @@
 using FluentAssertions;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,13 +16,13 @@ namespace Core.Test
                 .With(new TestDataProvider(valueFromDataProvider))
                 .Build<TestOutModel>();
 
-            var output = await pipeline.Run(new TestInModel
+            var output = await pipeline.Run(Helpers.List(new TestInModel
             {
                 Value = valueFromInputModel
-            });
+            }));
 
-            output.InputValue.Should().Be(valueFromInputModel);
-            output.StageValue.Should().Be(valueFromDataProvider);
+            output.Single().InputValue.Should().Be(valueFromInputModel);
+            output.Single().StageValue.Should().Be(valueFromDataProvider);
         }
     }
 

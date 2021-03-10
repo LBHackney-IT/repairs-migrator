@@ -72,7 +72,7 @@ namespace Core
             }
         }
 
-        private bool TryGetPropBagKey(MemberInfo prop, out string key)
+        private static bool TryGetPropBagKey(MemberInfo prop, out string key)
         {
             if (Attribute.GetCustomAttribute(prop, typeof(PropertyKeyAttribute)) is PropertyKeyAttribute attr)
             {
