@@ -22,8 +22,6 @@
         public const string Sub_Block_Ref = "Sub_Block_Ref";
         public const string Sub_Block_Name = "Sub_Block_Name";
         public const string Block_Range_Or_Estate = "Block_Range_Or_Estate";
-        public const string Description_WO = "Description_WO";
-        public const string Clean_Description = "Clean_Description";
         public const string HOC = "HOC";
         public const string Nominal_Code = "Nominal_Code";
         public const string Date_Raised = "Nominal_Code";

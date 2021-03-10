@@ -24,7 +24,7 @@ namespace Core
             return bag.To<TOut>();
         }
 
-        public async Task<IEnumerable<TOut>> Run<TIn>(IEnumerable<TIn> models)
+        public async Task<IEnumerable<TOut>> RunBatch<TIn>(IEnumerable<TIn> models)
             where TIn : class
         {
             List<TOut> outs = new List<TOut>();

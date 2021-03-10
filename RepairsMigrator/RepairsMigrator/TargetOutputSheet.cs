@@ -25,8 +25,6 @@ namespace RepairsMigrator
         public string Sub_Block_Ref { get; set; }
         public string Sub_Block_Name { get; set; }
         public string Block_Range_Or_Estate { get; set; }
-        public string Description_WO { get; set; }
-        public string Clean_Description { get; set; }
         public string HOC { get; set; }
         public string Nominal_Code { get; set; }
         public string Date_Raised { get; set; }

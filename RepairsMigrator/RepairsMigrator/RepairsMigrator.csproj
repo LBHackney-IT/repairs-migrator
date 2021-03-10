@@ -9,4 +9,19 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\CSV\CSV.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\Avonline.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Axis.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\DLO.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\RepairsOrdersPostCA.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
