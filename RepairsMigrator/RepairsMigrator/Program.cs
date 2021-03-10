@@ -12,19 +12,20 @@ namespace RepairsMigrator
         static async Task Main()
         {
             W("Starting");
-            var outPut = new List<TargetOutputSheet>();
+            var output = new List<TargetOutputSheet>();
 
-            outPut.AddRange(await LoadAndRun<DLOSheet>("Resources/DLO.csv"));
-            outPut.AddRange(await LoadAndRun<AxisSheet>("Resources/Axis.csv"));
-            outPut.AddRange(await LoadAndRun<AvonlineSheet>("Resources/Avonline.csv"));
-            outPut.AddRange(await LoadAndRun<AlphatrackSheet>("Resources/Alphatrack.csv"));
-            outPut.AddRange(await LoadAndRun<HertsSheet>("Resources/Herts.csv"));
-            outPut.AddRange(await LoadAndRun<PurdySheet>("Resources/Purdy.csv"));
-            outPut.AddRange(await LoadAndRun<StannahSheet>("Resources/Stannah.csv"));
+            output.AddRange(await LoadAndRun<DLOSheet>("Resources/DLO.csv"));
+            output.AddRange(await LoadAndRun<AxisSheet>("Resources/Axis.csv"));
+            output.AddRange(await LoadAndRun<AvonlineSheet>("Resources/Avonline.csv"));
+            output.AddRange(await LoadAndRun<AlphatrackSheet>("Resources/Alphatrack.csv"));
+            output.AddRange(await LoadAndRun<HertsSheet>("Resources/Herts.csv"));
+            output.AddRange(await LoadAndRun<PurdySheet>("Resources/Purdy.csv"));
+            output.AddRange(await LoadAndRun<StannahSheet>("Resources/Stannah.csv"));
 
             W("Writing Output");
-            CSVSaver.SaveCsv("out.csv", outPut);
+            CSVSaver.SaveCsv("out.csv", output);
             W("Finished");
+            Console.ReadLine();
         }
 
         private static async Task<IEnumerable<TargetOutputSheet>> LoadAndRun<TIn>(string path)
