@@ -12,9 +12,11 @@ namespace CSV
     {
         public static IEnumerable<T> LoadCsv<T>(string path)
         {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture);
-            config.IgnoreBlankLines = true;
-            config.PrepareHeaderForMatch = HeaderFixer;
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                IgnoreBlankLines = true,
+                PrepareHeaderForMatch = HeaderFixer
+            };
 
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader, config))

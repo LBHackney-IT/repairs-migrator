@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RepairsMigrator.SheetModels
 {
-    class AvonlineSheet
+    class AvonlineSheet : IAppColumns
     {
         [Constant("Avonline")]
         [PropertyKey(Keys.Supplier_Name)]

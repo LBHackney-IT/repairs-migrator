@@ -3,7 +3,7 @@ using CsvHelper.Configuration.Attributes;
 
 namespace RepairsMigrator.SheetModels
 {
-    class DLOSheet
+    class DLOSheet : IAppColumns
     {
         public string Timestamp { get; set; }
         public string PlannerstoallocatetoOPERATIVES { get; set; }

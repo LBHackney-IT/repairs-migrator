@@ -26,50 +26,62 @@ namespace Core
                 {
                     prop.SetValue(model, value);
                 }
-                else if(TryGetPropBagKey(prop, out var key)
+                else if (TryGetPropBagKey(prop, out var key)
                     && TryGetValue(key, out var value2))
                 {
                     prop.SetValue(model, value2);
                 }
             }
 
-            if (model is IHasErrors withErrors)
-            {
-                withErrors.Errors = this.errors;
-            }
+            AttachErrors(model);
 
             return model;
         }
 
-        internal void AddError(string error)
+        private void AttachErrors<T>(T model) where T : class, new()
         {
-            this.errors.Add(error);
+            if (model is IHasErrors withErrors) withErrors.Errors = this.errors;
         }
 
         internal static PropertyBag From<T>(T inModel)
              where T : class
         {
+            return From(inModel, typeof(T));
+        }
+
+        internal static PropertyBag From(object inModel, Type inType)
+        {
             var bag = new PropertyBag();
-            bag.Apply(inModel);
+            bag.Apply(inModel, inType);
 
             return bag;
         }
-
+        
         internal void Apply<T>(T model)
             where T : class
         {
-            Type type = typeof(T);
+            Apply(model, typeof(T));
+        }
+
+        internal void Apply(object model, Type type)
+        {
             bool shouldMapWholeClassFromName = ShouldMapFromPropName(type);
             foreach (var prop in type.GetProperties())
             {
                 if (shouldMapWholeClassFromName)
                 {
                     this[prop.Name] = prop.GetValue(model);
-                } else if (TryGetPropBagKey(prop, out var key))
+                }
+                else if (TryGetPropBagKey(prop, out var key))
                 {
                     this[key] = prop.GetValue(model);
                 }
             }
+        }
+
+        internal void AddError(string error)
+        {
+            this.errors.Add(error);
         }
 
         private static bool TryGetPropBagKey(MemberInfo prop, out string key)

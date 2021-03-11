@@ -19,6 +19,24 @@ namespace Core.Test
             var output = await pipeline.Run(Helpers.List(new TestInModel
             {
                 Value = valueFromInputModel
+            }), typeof(TestInModel));
+
+            output.Single().InputValue.Should().Be(valueFromInputModel);
+            output.Single().StageValue.Should().Be(valueFromDataProvider);
+        }
+
+        [Fact]
+        public async Task SimpleE2EWithGeneric()
+        {
+            const string valueFromDataProvider = "added from provider";
+            const string valueFromInputModel = "added from in";
+            var pipeline = new PipelineBuilder()
+                .With(new TestDataProvider(valueFromDataProvider))
+                .Build<TestOutModel>();
+
+            var output = await pipeline.Run(Helpers.List(new TestInModel
+            {
+                Value = valueFromInputModel
             }));
 
             output.Single().InputValue.Should().Be(valueFromInputModel);
