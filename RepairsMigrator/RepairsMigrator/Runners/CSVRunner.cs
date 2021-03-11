@@ -15,7 +15,6 @@ namespace RepairsMigrator.Runners
         {
             var output = new List<TargetOutputSheet>();
 
-            output.AddRange(await LoadAndRun<DLOSheet>("Resources/DLO.csv", pipeline));
             output.AddRange(await LoadAndRun<AxisSheet>("Resources/Axis.csv", pipeline));
             output.AddRange(await LoadAndRun<AvonlineSheet>("Resources/Avonline.csv", pipeline));
             output.AddRange(await LoadAndRun<AlphatrackSheet>("Resources/Alphatrack.csv", pipeline));

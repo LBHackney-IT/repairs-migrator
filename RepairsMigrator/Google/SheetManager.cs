@@ -1,4 +1,5 @@
-﻿using Google.Apis.Services;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using System;
@@ -14,11 +15,11 @@ namespace Google
     {
         private readonly SheetsService service;
 
-        public SheetManager(string appName, string apiKey)
+        public SheetManager(string appName, GoogleCredential creds)
         {
             this.service = new SheetsService(new BaseClientService.Initializer()
             {
-                ApiKey = apiKey,
+                HttpClientInitializer = creds,
                 ApplicationName = appName,
             });
         }
@@ -81,7 +82,7 @@ namespace Google
             for (int i = 0; i < sheetHeaders.Count; i++)
             {
                 var header = sheetHeaders[i];
-                if (string.IsNullOrWhiteSpace(header)) throw new NotSupportedException("All Columns with data must have a header");
+                if (string.IsNullOrWhiteSpace(header)) continue;
 
                 var matchingProp = properties.SingleOrDefault(p => p.Name == header);
                 if (matchingProp != null) propMap.Add(i, matchingProp);
@@ -93,7 +94,7 @@ namespace Google
         private static string FixHeader(string h)
         {
             string result = Regex.Replace(h, @"\(.*\)", string.Empty);
-            result = Regex.Replace(result, @"[\.\?\-]", string.Empty);
+            result = Regex.Replace(result, @"[\.\?\-:\,]", string.Empty);
             result = Regex.Replace(result.Trim(), @"\s", "_");
             return result;
         }

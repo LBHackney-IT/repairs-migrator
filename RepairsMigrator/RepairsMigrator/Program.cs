@@ -12,7 +12,7 @@ namespace RepairsMigrator
 
             await GoogleRunner.ProcessGoogleSheets(pipeline);
 
-            await CSVRunner.ProcessCSVs(pipeline);
+            //await CSVRunner.ProcessCSVs(pipeline);
         }
     }
 }

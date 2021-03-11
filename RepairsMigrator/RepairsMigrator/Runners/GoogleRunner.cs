@@ -1,6 +1,7 @@
 ﻿using Core;
 using CSV;
 using Google;
+using Google.Apis.Auth.OAuth2;
 using RepairsMigrator.SheetModels;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace RepairsMigrator.Runners
     {
         private static readonly Dictionary<string, Type> typeMaps = new Dictionary<string, Type>
         {
-            { "DLO", typeof(DLOSheet) },
-            { "Avonline", typeof(AvonlineSheet) }
+            { "DLOCopy", typeof(DLOSheet) },
+            //{ "Avonline", typeof(AvonlineSheet) }
         };
 
 
@@ -33,7 +34,7 @@ namespace RepairsMigrator.Runners
 
         private static async Task<IList<GoogleSheetResult>> LoadSheetData()
         {
-            var sm = new SheetManager("", "");
+            var sm = new SheetManager("RepairsMigration", GoogleCredential.FromFile("Resources/creds.json"));
             var pointerSheet = await sm.LoadSheet<DocumentHub>("1Fg_xi24p0YS-ZI1UDB3lCMT7phZSe5nJLu4UJYKF9Is", "Main");
 
             var result = new List<GoogleSheetResult>();
