@@ -13,6 +13,17 @@ namespace RepairsMigrator
     {
         static async Task Main()
         {
+            Console.WriteLine(
+@"
+===========================================
+  _______ _            _______          _ 
+ |__   __| |          |__   __|        | |
+    | |  | |__   ___     | | ___   ___ | |
+    | |  | '_ \ / _ \    | |/ _ \ / _ \| |
+    | |  | | | |  __/    | | (_) | (_) | |
+    |_|  |_| |_|\___|    |_|\___/ \___/|_|
+===========================================
+");
 #if DEBUG 
             Console.WriteLine("Running In Debug");
             var logFile = "log.txt";
