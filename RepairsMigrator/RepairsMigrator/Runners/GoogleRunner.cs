@@ -12,7 +12,7 @@ namespace RepairsMigrator.Runners
 {
     class GoogleRunner
     {
-        private static readonly Dictionary<string, Type> typeMaps = new Dictionary<string, Type>
+        public static readonly Dictionary<string, Type> TypeMaps = new Dictionary<string, Type>
         {
             { "DLO", typeof(DLOSheet) },
             { "Avonline", typeof(AvonlineSheet) },
@@ -54,7 +54,7 @@ namespace RepairsMigrator.Runners
             CSVSaver.SaveCsv("out_google.csv", output);
         }
 
-        private static async Task<IList<GoogleSheetResult>> LoadSheetData()
+        public static async Task<IList<GoogleSheetResult>> LoadSheetData()
         {
             var sm = new SheetManager("RepairsMigration", GoogleCredential.FromFile("Resources/creds.json"));
             var pointerSheet = await sm.LoadSheet<DocumentHub>("1Fg_xi24p0YS-ZI1UDB3lCMT7phZSe5nJLu4UJYKF9Is", "Main");
@@ -67,7 +67,7 @@ namespace RepairsMigrator.Runners
             {
                 string contractor = item.Contractor;
                 if (!string.IsNullOrWhiteSpace(item.Sheet)
-                    && typeMaps.TryGetValue(contractor, out var type))
+                    && TypeMaps.TryGetValue(contractor, out var type))
                 {
                     attemptedLoads++;
                     Log.Information($"Loading {contractor} from {item.DocumentId}:{item.Sheet}");
@@ -75,7 +75,7 @@ namespace RepairsMigrator.Runners
                     {
                         IEnumerable<object> data = await sm.LoadSheet(item.DocumentId, item.Sheet, type);
                         AttachContractor(data, contractor);
-                        result.Add(new GoogleSheetResult(type, data));
+                        result.Add(new GoogleSheetResult(type, data, contractor));
                         successfulLoads++;
                     } catch (Exception e)
                     {
@@ -106,11 +106,13 @@ namespace RepairsMigrator.Runners
     {
         public Type ModelType;
         public IEnumerable<object> Data;
+        public readonly string Contractor;
 
-        public GoogleSheetResult(Type modelType, IEnumerable<object> data)
+        public GoogleSheetResult(Type modelType, IEnumerable<object> data, string contractor)
         {
             ModelType = modelType;
             Data = data;
+            this.Contractor = contractor;
         }
     }
 }

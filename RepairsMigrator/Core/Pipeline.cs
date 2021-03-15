@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace Core
                 await stage.Process(bags);
             }
 
+            Log.Information("Processed {count} Rows", bags.Count);
             return bags.Select(b => b.To<TOut>()).ToList();
         }
     }
