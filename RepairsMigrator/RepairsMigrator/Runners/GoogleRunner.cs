@@ -62,6 +62,7 @@ namespace RepairsMigrator.Runners
             var result = new List<GoogleSheetResult>();
 
             int attemptedLoads = 0;
+            int successfulLoads = 0;
             foreach (var item in pointerSheet)
             {
                 string contractor = item.Contractor;
@@ -70,13 +71,21 @@ namespace RepairsMigrator.Runners
                 {
                     attemptedLoads++;
                     Log.Information($"Loading {contractor} from {item.DocumentId}:{item.Sheet}");
-                    IEnumerable<object> data = await sm.LoadSheet(item.DocumentId, item.Sheet, type);
-                    AttachContractor(data, contractor);
-                    result.Add(new GoogleSheetResult(type, data));
+                    try
+                    {
+                        IEnumerable<object> data = await sm.LoadSheet(item.DocumentId, item.Sheet, type);
+                        AttachContractor(data, contractor);
+                        result.Add(new GoogleSheetResult(type, data));
+                        successfulLoads++;
+                    } catch (Exception e)
+                    {
+                        Log.Error(e.Message);
+                    }
                 }
             }
 
             Log.Information("Attempted Loads: {attemptedLoads}", attemptedLoads);
+            Log.Information("Successful Loads: {successfulLoads}", successfulLoads);
 
             return result;
         }

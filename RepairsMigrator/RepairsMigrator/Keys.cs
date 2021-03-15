@@ -40,5 +40,7 @@
         public const string DLO_Split = "DLO_Split";
         public const string Supplier_Name = "Supplier_Name";
         public const string Neigh_Area = "Neigh_Area";
+        public const string SourceRow = "SourceRow";
+        public const string SourceDescription = "SourceDescription";
     }
 }

@@ -16,8 +16,13 @@ namespace RepairsMigrator.SheetModels
         public string Contractors_own_ref_no { get; set; }
         public string New_UHW_Number { get; set; }
         public string Requested_by { get; set; }
+
         [PropertyKey(Keys.Supplier_Name)]
         public string Contractor { get; set; }
+        [PropertyKey(Keys.SourceDescription)]
+        public string Source { get; set; }
+        [PropertyKey(Keys.SourceRow)]
+        public string Id { get; set; }
     }
 
     partial class CMSheet

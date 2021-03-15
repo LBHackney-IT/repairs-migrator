@@ -31,6 +31,10 @@ namespace RepairsMigrator.SheetModels
         public string Estate_reference { get; set; }
         public string UH_Property_Reference { get; set; }
         public string Form_Reference__do_not_alter { get; set; }
+        [PropertyKey(Keys.SourceDescription)]
+        public string Source { get; set; }
+        [PropertyKey(Keys.SourceRow)]
+        public string Id { get; set; }
 
         [Constant("DLO")]
         [PropertyKey(Keys.Supplier_Name)]

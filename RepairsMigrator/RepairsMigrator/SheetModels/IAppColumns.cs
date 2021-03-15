@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core;
+using Google;
 
 namespace RepairsMigrator.SheetModels
 {
-    interface IAppColumns
+    interface IAppColumns : IHasSourceColumns
     {
+        [PropertyKey(Keys.Supplier_Name)]
         string Contractor { get; set; }
     }
 }

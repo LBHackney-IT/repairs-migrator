@@ -43,5 +43,7 @@ namespace RepairsMigrator
         public string DLO_Split { get; set; }
         public string Supplier_Name { get; set; }
         public string Neigh_Area { get; set; }
+        public string SourceRow { get; set; }
+        public string SourceDescription { get; set; }
     }
 }
