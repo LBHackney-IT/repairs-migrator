@@ -3,7 +3,7 @@ using CsvHelper.Configuration.Attributes;
 
 namespace RepairsMigrator.SheetModels
 {
-    class AxisSheet
+    class AxisSheet : IAppColumns
     {
         [PropertyKey(Keys.Description)]
         public string Description_of_work { get; set; }

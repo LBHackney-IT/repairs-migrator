@@ -2,6 +2,7 @@
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,34 +28,42 @@ namespace Google
         public async Task<IEnumerable<TModel>> LoadSheet<TModel>(string sheetId, string sheetName)
             where TModel : class, new()
         {
-            SpreadsheetsResource.ValuesResource.GetRequest request =
-                    service.Spreadsheets.Values.Get(sheetId, sheetName);
-            ValueRange response = await request.ExecuteAsync();
-            var values = response.Values;
-
-            return ConvertResponse(values, typeof(TModel)).Cast<TModel>();
+            return (await LoadSheet(sheetId, sheetName, typeof(TModel))).Cast<TModel>();
         }
 
         public async Task<IEnumerable<object>> LoadSheet(string sheetId, string sheetName, Type type)
         {
-            SpreadsheetsResource.ValuesResource.GetRequest request =
-                    service.Spreadsheets.Values.Get(sheetId, sheetName);
-            ValueRange response = await request.ExecuteAsync();
-            var values = response.Values;
-
-            return ConvertResponse(values, type);
+            try
+            {
+                SpreadsheetsResource.ValuesResource.GetRequest request =
+                        service.Spreadsheets.Values.Get(sheetId, sheetName);
+                ValueRange response = await request.ExecuteAsync();
+                var values = response.Values;
+                return ConvertResponse(values, type);
+            } catch (Exception e)
+            {
+                var errorCode = Regex.Match(e.Message, @"\[\d+\]");
+                Log.Error($"Failed Load Sheet {sheetId}, {sheetName} For {type.Name} with Error Code {errorCode}");
+                return new List<object>();
+            }
         }
 
         private IEnumerable<object> ConvertResponse(IList<IList<object>> values, Type type)
         {
-            Dictionary<int, PropertyInfo> propMap = MapHeaders(values, type);
-            return LoadData(values, propMap, type);
+            var skipRows = CalculateRowsToSkip(values);
+            Dictionary<int, PropertyInfo> propMap = MapHeaders(values, type, skipRows);
+            return LoadData(values, propMap, type, skipRows + 1);
         }
 
-        private static List<object> LoadData(IList<IList<object>> values, Dictionary<int, PropertyInfo> propMap, Type type)
+        private int CalculateRowsToSkip(IList<IList<object>> values)
+        {
+            return values.First().Count() <= 1 ? 1 : 0; // TODO: This is a hack and this behaviour should be configured per sheet
+        }
+
+        private static List<object> LoadData(IList<IList<object>> values, Dictionary<int, PropertyInfo> propMap, Type type, int startFrom = 1)
         {
             List<object> result = new List<object>();
-            foreach (var row in values.Skip(1))
+            foreach (var row in values.Skip(startFrom))
             {
                 var model = Activator.CreateInstance(type);
 
@@ -73,12 +82,13 @@ namespace Google
             return result;
         }
 
-        private static Dictionary<int, PropertyInfo> MapHeaders(IList<IList<object>> values, Type type)
+        private static Dictionary<int, PropertyInfo> MapHeaders(IList<IList<object>> values, Type type, int row = 0)
         {
             var properties = type.GetProperties();
             var propMap = new Dictionary<int, PropertyInfo>();
 
-            var sheetHeaders = values.First().Select(h => FixHeader(h.ToString())).ToList();
+            var sheetHeaders = values.Skip(row).First().Select(h => FixHeader(h.ToString())).ToList();
+            Log.Verbose("{model}, {@sheetHeaders}", type.Name, sheetHeaders);
             for (int i = 0; i < sheetHeaders.Count; i++)
             {
                 var header = sheetHeaders[i];
@@ -94,8 +104,8 @@ namespace Google
         private static string FixHeader(string h)
         {
             string result = Regex.Replace(h, @"\(.*\)", string.Empty);
-            result = Regex.Replace(result, @"[\.\?\-:\,]", string.Empty);
-            result = Regex.Replace(result.Trim(), @"\s", "_");
+            result = Regex.Replace(result, @"[\.\?\-:\,\\\/']", string.Empty);
+            result = Regex.Replace(result.Trim(), @"\s+", "_");
             return result;
         }
     }

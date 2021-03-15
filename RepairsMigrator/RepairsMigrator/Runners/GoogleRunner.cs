@@ -3,6 +3,7 @@ using CSV;
 using Google;
 using Google.Apis.Auth.OAuth2;
 using RepairsMigrator.SheetModels;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,8 +14,29 @@ namespace RepairsMigrator.Runners
     {
         private static readonly Dictionary<string, Type> typeMaps = new Dictionary<string, Type>
         {
-            { "DLOCopy", typeof(DLOSheet) },
-            //{ "Avonline", typeof(AvonlineSheet) }
+            { "DLO", typeof(DLOSheet) },
+            { "Avonline", typeof(AvonlineSheet) },
+            { "Axis", typeof(AxisSheet) },
+            { "Alphatrack", typeof(AlphatrackSheet) },
+            { "Purdy", typeof(PurdySheet) },
+            { "Stannah", typeof(StannahSheet) },
+            { "Herts Heritage", typeof(HertsSheet) },
+            { "Door Entry", typeof(CMSheet) },
+            { "Lightning Protection", typeof(CMSheet) },
+            { "Lift Breakdown", typeof(CMSheet) },
+            { "Fire Alarm/AOV", typeof(CMSheet) },
+            { "Electrical Supplies", typeof(CMSheet) },
+            { "Electric Heating", typeof(CMSheet) },
+            { "Communal Lighting", typeof(CMSheet) },
+            { "Emergency Lighting Servicing", typeof(CMSheet) },
+            { "Reactive Rewires", typeof(CMSheet) },
+            { "FRA Works", typeof(CMSheet) },
+            { "Lift Servicing", typeof(CMSheet) },
+            { "Heat Meters", typeof(CMSheet) },
+            { "T.V Aerials", typeof(CMSheet) },
+            { "DPA", typeof(CMSheet) },
+            { "Mech. Repairs", typeof(CMSheet) },
+            { "CP12", typeof(CMSheet) },
         };
 
 
@@ -39,17 +61,22 @@ namespace RepairsMigrator.Runners
 
             var result = new List<GoogleSheetResult>();
 
+            int attemptedLoads = 0;
             foreach (var item in pointerSheet)
             {
                 string contractor = item.Contractor;
                 if (!string.IsNullOrWhiteSpace(item.Sheet)
                     && typeMaps.TryGetValue(contractor, out var type))
                 {
+                    attemptedLoads++;
+                    Log.Information($"Loading {contractor} from {item.DocumentId}:{item.Sheet}");
                     IEnumerable<object> data = await sm.LoadSheet(item.DocumentId, item.Sheet, type);
                     AttachContractor(data, contractor);
                     result.Add(new GoogleSheetResult(type, data));
                 }
             }
+
+            Log.Information("Attempted Loads: {attemptedLoads}", attemptedLoads);
 
             return result;
         }

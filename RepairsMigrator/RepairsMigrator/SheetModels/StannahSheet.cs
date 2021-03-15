@@ -3,7 +3,7 @@ using CsvHelper.Configuration.Attributes;
 
 namespace RepairsMigrator.SheetModels
 {
-    class StannahSheet
+    class StannahSheet : IAppColumns
     {
         [Constant("Stannah")]
         [PropertyKey(Keys.Supplier_Name)]

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RepairsMigrator.SheetModels
 {
-    class HertsSheet
+    class HertsSheet : IAppColumns
     {
         [Constant("Herts Heritage")]
         [PropertyKey(Keys.Supplier_Name)]

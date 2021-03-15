@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RepairsMigrator.SheetModels
 {
-    class AlphatrackSheet
+    class AlphatrackSheet : IAppColumns
     {
         [Constant("Alphatrack")]
         [PropertyKey(Keys.Supplier_Name)]
