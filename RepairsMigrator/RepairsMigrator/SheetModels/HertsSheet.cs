@@ -1,4 +1,5 @@
 ﻿using Core;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RepairsMigrator.SheetModels
 {
@@ -6,6 +7,7 @@ namespace RepairsMigrator.SheetModels
     {
         // Timestamp
         [PropertyKey(Keys.Created_Date)]
+        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Maps to CSV column")]
         public string zz { get; set; }
         
         public string Email_address { get; set; }

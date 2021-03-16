@@ -63,13 +63,5 @@ namespace RepairsMigrator.Runners
                 CSVSaver.SaveCsv($"csvs/{fileName}.csv", item.Data, item.ModelType);
             }
         }
-
-        private static async Task<IEnumerable<TargetOutputSheet>> LoadAndRun<TIn>(string path, Pipeline<TargetOutputSheet> pipeline)
-            where TIn : class, new()
-        {
-            var dloIn = CSVLoader.LoadCsv<TIn>(path);
-
-            return await pipeline.Run(dloIn);
-        }
     }
 }

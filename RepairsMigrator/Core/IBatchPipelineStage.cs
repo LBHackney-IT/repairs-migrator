@@ -5,7 +5,7 @@ namespace Core
 {
     public interface IBatchPipelineStage
     {
-        Task Process(IEnumerable<PropertyBag> bag);
+        Task Process(IEnumerable<PropertyBag> bags);
     }
 
     class BatchWrapper : IBatchPipelineStage

@@ -83,7 +83,7 @@ namespace Core
             }
         }
 
-        internal void AddError(string error)
+        public void AddError(string error)
         {
             this.errors.Add(error);
         }
