@@ -15,12 +15,16 @@ namespace RepairsMigrator.SheetModels
         
         public string Email_address { get; set; }
         
+        [PropertyKey(Keys.Date)]
         public string Date { get; set; }
         
+        [PropertyKey(Keys.Time)]
         public string Time { get; set; }
         
+        [PropertyKey(Keys.Short_Address)]
         public string Property_Address { get; set; }
         
+        [PropertyKey(Keys.Aggregated_Client_Info)]
         public string CONTACT_INFORMATION { get; set; }
         
         [PropertyKey(Keys.Work_Order_Reference)]
@@ -29,8 +33,10 @@ namespace RepairsMigrator.SheetModels
         [PropertyKey(Keys.Description)]
         public string Description_of_work { get; set; }
         
+        [PropertyKey(Keys.Sor_Codes)]
         public string CALL_OUT_SORs { get; set; }
-        
+
+        [PropertyKey(Keys.Cost_Code)]
         public string Budget_Code { get; set; }
         
         [PropertyKey(Keys.Priority)]

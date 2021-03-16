@@ -2,6 +2,7 @@
 {
     public static class Keys
     {
+        // Target Data
         public const string Trade = "Trade";
         public const string Short_Address = "Short_Address";
         public const string Clients_Name = "Clients_Name";
@@ -42,5 +43,10 @@
         public const string Neigh_Area = "Neigh_Area";
         public const string SourceRow = "SourceRow";
         public const string SourceDescription = "SourceDescription";
+
+        // Intermediate  Keys (Stages need to map these to target keys)
+        public const string Date = "Date";
+        public const string Time = "Time"; // TODO: Build date and time into temp workorder
+        public const string Aggregated_Client_Info = "Aggregated_Client_Info"; //  TODO: UnPick contact info
     }
 }
