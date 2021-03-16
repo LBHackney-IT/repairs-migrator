@@ -5,6 +5,38 @@ namespace RepairsMigrator.SheetModels
 {
     class AxisSheet : IAppColumns
     {
+        [PropertyKey(Keys.Created_Date)]
+        public string Timestamp { get; set; }
+        
+        public string Email_address { get; set; }
+        
+        [PropertyKey(Keys.Short_Address)]
+        public string Property_Address { get; set; }
+        
+        [PropertyKey(Keys.Work_Order_Reference)]
+        public string Temporary_Order_Number { get; set; }
+        
+        [PropertyKey(Keys.Cost_Code)]
+        public string Budget_Code { get; set; }
+        
+        [PropertyKey(Keys.Est_Cost_After_Variation)]
+        public string Order_Value { get; set; }
+        
+        public string NOTES_AND_INFORMATION { get; set; }
+        
+        [PropertyKey(Keys.Priority)]
+        public string Priority { get; set; }
+
+        [PropertyKey(Keys.Date)]
+        public string Date { get; set; }
+
+        [PropertyKey(Keys.Time)]
+        public string Time { get; set; }
+
+        [PropertyKey(Keys.Completion_Date)]
+        [PropertyKey(Keys.Work_Order_completion_date)]
+        public string Completed_Date { get; set; }
+
         [PropertyKey(Keys.Description)]
         public string Description_of_work { get; set; }
 
