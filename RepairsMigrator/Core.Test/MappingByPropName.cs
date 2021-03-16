@@ -11,13 +11,16 @@ namespace Core.Test
         public async Task SimpleE2E()
         {
             const string valueFromInputModel = "added from in";
-            var pipeline = new PipelineBuilder()
-                .Build<PropNameTestOutModel>();
+            var pipeline = new PipelineBuilder().Build();
 
-            var output = await pipeline.Run(Helpers.List(new PropNameTestInModel
+            pipeline.In(Helpers.List(new PropNameTestInModel
             {
                 Value = valueFromInputModel
             }));
+
+            await pipeline.Run();
+
+            var output = pipeline.Out<PropNameTestOutModel>();
 
             output.Single().Value.Should().Be(valueFromInputModel);
         }

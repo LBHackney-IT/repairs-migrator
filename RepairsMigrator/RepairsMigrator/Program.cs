@@ -1,6 +1,7 @@
 ﻿using Core;
 using CSV;
 using RepairsMigrator.Runners;
+using RepairsMigrator.Stages;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -44,7 +45,9 @@ namespace RepairsMigrator
 #endif
                 .CreateLogger();
 
-            var pipeline = new PipelineBuilder().Build<TargetOutputSheet>();
+            var pipeline = new PipelineBuilder()
+                .With(new LogStage())
+                .Build();
 #if DEBUG
             await CSVRunner.LoadSheetsForTest();
             await CSVRunner.ProcessCSVs(pipeline);

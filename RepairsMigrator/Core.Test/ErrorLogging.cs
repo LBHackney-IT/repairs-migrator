@@ -14,9 +14,11 @@ namespace Core.Test
         {
             var pipeline = new PipelineBuilder()
                 .With(new ValidateStage<ErrorTestInModel>())
-                .Build<ErrorTestOutModel>();
+                .Build();
 
-            var output = await pipeline.Run(Helpers.List(new ErrorTestInModel()));
+            pipeline.In(Helpers.List(new ErrorTestInModel()));
+            await pipeline.Run();
+            var output = pipeline.Out<ErrorTestOutModel>();
 
             output.Single().Errors.Should().Contain(e => e == "property must have value");
         }
@@ -26,9 +28,11 @@ namespace Core.Test
         {
             var pipeline = new PipelineBuilder()
                 .With(new ValidateStage<ErrorTestInModel>())
-                .Build<ErrorTestOutModel>();
+                .Build();
 
-            var output = await pipeline.Run(Helpers.List(new ErrorTestInModel() { Value = "a value" }));
+            pipeline.In(Helpers.List(new ErrorTestInModel() { Value = "a value" }));
+            await pipeline.Run();
+            var output = pipeline.Out<ErrorTestOutModel>();
 
             output.Single().Errors.Should().BeEmpty();
         }

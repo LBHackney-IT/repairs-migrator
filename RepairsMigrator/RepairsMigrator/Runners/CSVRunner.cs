@@ -13,16 +13,18 @@ namespace RepairsMigrator.Runners
 {
     class CSVRunner
     {
-        public static async Task ProcessCSVs(Pipeline<TargetOutputSheet> pipeline)
+        public static async Task ProcessCSVs(Pipeline pipeline)
         {
-            var output = new List<TargetOutputSheet>();
-
             var types = GoogleRunner.TypeMaps;
 
             foreach (var type in types)
             {
-                output.AddRange(await pipeline.Run(LoadCSV(type.Key, type.Value), type.Value));
+                pipeline.In(LoadCSV(type.Key, type.Value), type.Value);
             }
+
+            await pipeline.Run();
+
+            var output = pipeline.Out<TargetOutputSheet>();
 
             CSVSaver.SaveCsv("out_csv.csv", output);
         }

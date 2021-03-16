@@ -14,12 +14,16 @@ namespace Core.Test
             const string valueFromInputModel = "added from in";
             var pipeline = new PipelineBuilder()
                 .With(new TestDataProvider(valueFromDataProvider))
-                .Build<TestOutModel>();
+                .Build();
 
-            var output = await pipeline.Run(Helpers.List(new TestInModel
+            pipeline.In(Helpers.List(new TestInModel
             {
                 Value = valueFromInputModel
             }), typeof(TestInModel));
+
+            await pipeline.Run();
+
+            var output = pipeline.Out<TestOutModel>();
 
             output.Single().InputValue.Should().Be(valueFromInputModel);
             output.Single().StageValue.Should().Be(valueFromDataProvider);
@@ -32,12 +36,16 @@ namespace Core.Test
             const string valueFromInputModel = "added from in";
             var pipeline = new PipelineBuilder()
                 .With(new TestDataProvider(valueFromDataProvider))
-                .Build<TestOutModel>();
+                .Build();
 
-            var output = await pipeline.Run(Helpers.List(new TestInModel
+            pipeline.In(Helpers.List(new TestInModel
             {
                 Value = valueFromInputModel
             }));
+
+            await pipeline.Run();
+
+            var output = pipeline.Out<TestOutModel>();
 
             output.Single().InputValue.Should().Be(valueFromInputModel);
             output.Single().StageValue.Should().Be(valueFromDataProvider);

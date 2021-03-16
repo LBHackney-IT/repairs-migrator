@@ -24,10 +24,9 @@ namespace Core
             return this;
         }
 
-        public Pipeline<T> Build<T>()
-            where T : class, new()
+        public Pipeline Build()
         {
-            return new Pipeline<T>(stages);
+            return new Pipeline(stages);
         }
     }
 }

@@ -40,16 +40,18 @@ namespace RepairsMigrator.Runners
         };
 
 
-        public static async Task ProcessGoogleSheets(Pipeline<TargetOutputSheet> pipeline)
+        public static async Task ProcessGoogleSheets(Pipeline pipeline)
         {
             var allSheets = await LoadSheetData();
 
-            var output = new List<TargetOutputSheet>();
-
             foreach (var sheet in allSheets)
             {
-                output.AddRange(await pipeline.Run(sheet.Data, sheet.ModelType));
+                pipeline.In(sheet.Data, sheet.ModelType);
             }
+
+            await pipeline.Run();
+
+            var output = pipeline.Out<TargetOutputSheet>();
 
             CSVSaver.SaveCsv("out_google.csv", output);
         }

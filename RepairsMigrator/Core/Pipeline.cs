@@ -6,37 +6,39 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    public class Pipeline<TOut>
-        where TOut : class, new()
+    public class Pipeline
     {
         private readonly IEnumerable<IBatchPipelineStage> stages;
+        private List<PropertyBag> bags = new List<PropertyBag>();
 
         internal Pipeline(IEnumerable<IBatchPipelineStage> stages) => this.stages = stages;
 
-        public async Task<IEnumerable<TOut>> Run<TIn>(IEnumerable<TIn> models)
-            where TIn : class
+        public async Task Run()
         {
-            var bags = models.Select(m => PropertyBag.From(m)).ToList();
-
             foreach (var stage in stages)
             {
                 await stage.Process(bags);
             }
-
-            return bags.Select(b => b.To<TOut>()).ToList();
         }
 
-        public async Task<IEnumerable<TOut>> Run(IEnumerable<object> models, Type inType)
+        public IEnumerable<T> Out<T>()
+            where T : class, new()
         {
-            var bags = models.Select(m => PropertyBag.From(m, inType)).ToList();
+            Log.Information("Outputting {count} records to type {typeName}", bags.Count(), typeof(T).Name);
+            return bags.Select(b => b.To<T>()).ToList();
+        }
 
-            foreach (var stage in stages)
-            {
-                await stage.Process(bags);
-            }
+        public void In<TIn>(IEnumerable<TIn> models)
+            where TIn : class
+        {
+            Log.Information("Loading {count} records of type {typeName}", models.Count(), typeof(TIn).Name);
+            bags.AddRange(models.Select(m => PropertyBag.From(m)).ToList());
+        }
 
-            Log.Information("Processed {count} Rows", bags.Count);
-            return bags.Select(b => b.To<TOut>()).ToList();
+        public void In(IEnumerable<object> models, Type inType)
+        {
+            Log.Information("Loading {count} records of type {typeName}", models.Count(), inType.Name);
+            bags.AddRange(models.Select(m => PropertyBag.From(m, inType)).ToList());
         }
     }
 }
