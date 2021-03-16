@@ -35,6 +35,7 @@ namespace RepairsMigrator
 
 
             Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
                 .WriteTo.Console()
 #if DEBUG
                 .WriteTo.File(logFile)

@@ -6,7 +6,6 @@ namespace RepairsMigrator
     class TargetOutputSheet
     {
         public string Trade { get; set; }
-        public string Prop_Ref { get; set; }
         public string Short_Address { get; set; }
         public string Clients_Name { get; set; }
         public string Clients_Number { get; set; }
@@ -15,7 +14,8 @@ namespace RepairsMigrator
         public string Description { get; set; }
         public string Priority { get; set; }
         public string Sor_Codes { get; set; }
-        public string Appointment { get; set; }
+        public string AppointmentDate { get; set; }
+        public string AppointmentTime { get; set; }
         public string Current_Status { get; set; }
         public string Work_Order_Reference { get; set; }
         public string Request_Reference { get; set; }

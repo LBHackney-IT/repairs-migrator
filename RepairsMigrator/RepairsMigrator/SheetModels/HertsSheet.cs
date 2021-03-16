@@ -1,20 +1,40 @@
 ﻿using Core;
-using CsvHelper.Configuration.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RepairsMigrator.SheetModels
 {
     class HertsSheet : IAppColumns
     {
-        [Constant("Herts Heritage")]
+        // Timestamp
+        public string zz { get; set; }
+        
+        public string Email_address { get; set; }
+        
+        public string Property_Address { get; set; }
+        
+        public string Description_of_work { get; set; }
+        
+        public string Budget_Code { get; set; }
+        
+        public string Order_Value { get; set; }
+        
+        public string NOTES_AND_INFORMATION { get; set; }
+        
+        public string Priority_Code { get; set; }
+        
+        public string Temporary_Order_Number { get; set; }
+        
+        public string CONTACT_INFORMATION_FOR_ACCESS { get; set; }
+        
+        public string STATUS { get; set; }
+        
+        public string STATUS_NOTES { get; set; }
+
         [PropertyKey(Keys.Supplier_Name)]
         public string Contractor { get; set; }
+        
         [PropertyKey(Keys.SourceDescription)]
         public string Source { get; set; }
+        
         [PropertyKey(Keys.SourceRow)]
         public string Id { get; set; }
     }

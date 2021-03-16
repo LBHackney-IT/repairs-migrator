@@ -2,7 +2,7 @@
 
 namespace Core
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class PropertyKeyAttribute : Attribute
     {
         public string Key { get; }

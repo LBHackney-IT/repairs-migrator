@@ -34,8 +34,11 @@ namespace RepairsMigrator.SheetModels
     partial class CMSheet
     {
         public string Raised_Value { get; set; }
+        
         public string Total_invoiced { get; set; }
+        
         public string Cost_code { get; set; }
+        
         public string Works_statuscomments { get; set; }
     }
 
@@ -47,19 +50,23 @@ namespace RepairsMigrator.SheetModels
     partial class CMSheet
     {
         public string SOR { get; set; }
+        
         public string Cost { get; set; }
+        
         public string Subjective { get; set; }
     }
 
     partial class CMSheet
     {
         public string Contractor_Job_Status_Complete_or_in_Progress { get; set; }
+        
         public string Date_Completed { get; set; }
     }
 
     partial class CMSheet
     {
         public string Budget_Subjective { get; set; }
+        
         public string TESS_Number { get; set; }
     }
 

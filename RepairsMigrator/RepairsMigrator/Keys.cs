@@ -3,7 +3,6 @@
     public static class Keys
     {
         public const string Trade = "Trade";
-        public const string Prop_Ref = "Prop_Ref";
         public const string Short_Address = "Short_Address";
         public const string Clients_Name = "Clients_Name";
         public const string Clients_Number = "Clients_Number";
@@ -12,7 +11,8 @@
         public const string Description = "Description";
         public const string Priority = "Priority";
         public const string Sor_Codes = "Sor_Codes";
-        public const string Appointment = "Appointment";
+        public const string AppointmentDate = "AppointmentDate";
+        public const string AppointmentTime = "AppointmentTime";
         public const string Current_Status = "Current_Status";
         public const string Work_Order_Reference = "Work_Order_Reference";
         public const string Request_Reference = "Request_Reference";

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Core
@@ -72,9 +73,12 @@ namespace Core
                 {
                     this[prop.Name] = prop.GetValue(model);
                 }
-                else if (TryGetPropBagKey(prop, out var key))
+                else
                 {
-                    this[key] = prop.GetValue(model);
+                    foreach (var key in GetPropBagKeys(prop))
+                    {
+                        this[key] = prop.GetValue(model);
+                    }
                 }
             }
         }
@@ -100,6 +104,19 @@ namespace Core
 
             key = string.Empty;
             return false;
+        }
+
+        private static IEnumerable<string> GetPropBagKeys(MemberInfo prop)
+        {
+            foreach (var attr in Attribute.GetCustomAttributes(prop, typeof(PropertyKeyAttribute)).OfType<PropertyKeyAttribute>())
+            {
+                yield return attr.Key;
+            }
+
+            if (ShouldMapFromPropName(prop))
+            {
+                yield return prop.Name;
+            }
         }
 
         private static bool ShouldMapFromPropName(MemberInfo prop)
