@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSV", "CSV\CSV.csproj", "{4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google", "Google\Google.csproj", "{3CBCC0E4-EDF3-40E9-B525-10D20100F54F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB", "DB\DB.csproj", "{12B58FFF-9AF3-4962-AEEB-9E0F7C333CCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB", "DB\DB.csproj", "{12B58FFF-9AF3-4962-AEEB-9E0F7C333CCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB.Test", "DB.Test\DB.Test.csproj", "{2ADC15FB-E327-4CEF-9B2F-7D384D05C293}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{12B58FFF-9AF3-4962-AEEB-9E0F7C333CCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12B58FFF-9AF3-4962-AEEB-9E0F7C333CCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12B58FFF-9AF3-4962-AEEB-9E0F7C333CCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ADC15FB-E327-4CEF-9B2F-7D384D05C293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ADC15FB-E327-4CEF-9B2F-7D384D05C293}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ADC15FB-E327-4CEF-9B2F-7D384D05C293}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ADC15FB-E327-4CEF-9B2F-7D384D05C293}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
