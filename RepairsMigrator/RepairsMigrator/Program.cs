@@ -32,7 +32,7 @@ namespace RepairsMigrator
 #else
             Console.WriteLine("Running in not debug");
 #endif
-            Console.WriteLine("===========================================================");
+            Console.WriteLine("===========================================");
 
 
             Log.Logger = new LoggerConfiguration()
