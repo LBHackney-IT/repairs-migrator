@@ -37,7 +37,7 @@ namespace RepairsMigrator.Stages
 
         private static void AddItem(Dictionary<string, IList<FinanceData>> result, FinanceData item)
         {
-            var key = item.UH_job_No;
+            var key = item.UH_job_No?.ToLowerInvariant().Trim();
 
             if (key is null) return;
 
