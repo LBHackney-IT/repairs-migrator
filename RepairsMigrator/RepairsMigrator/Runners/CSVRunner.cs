@@ -24,7 +24,7 @@ namespace RepairsMigrator.Runners
 
             await pipeline.Run();
 
-            var output = pipeline.Out<TargetOutputSheet>();
+            var output = pipeline.Out<IntermediateSheet>();
 
             CSVSaver.SaveCsv("out_csv.csv", output);
         }

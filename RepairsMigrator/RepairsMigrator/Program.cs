@@ -47,6 +47,9 @@ namespace RepairsMigrator
 
             var pipeline = new PipelineBuilder()
                 .With(new LogStage())
+                .With(new ResolveAddressStage())
+                .With(new ResolveHierarchyDetails())
+                .With(new FinanceIntegrationStage())
                 .Build();
 #if DEBUG
             await CSVRunner.LoadSheetsForTest();

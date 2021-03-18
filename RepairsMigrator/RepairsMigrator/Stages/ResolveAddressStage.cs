@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DB;
+using Serilog;
 
 namespace RepairsMigrator.Stages
 {
@@ -12,6 +13,8 @@ namespace RepairsMigrator.Stages
     {
         public async Task Process(IEnumerable<PropertyBag> bags)
         {
+             
+             
             var gateway = new PropertyGateway();
 
             var addresses = bags
@@ -20,6 +23,8 @@ namespace RepairsMigrator.Stages
                     || string.IsNullOrWhiteSpace(b[Keys.Property_Reference].ToString()))
                 .Select(b => b[Keys.Short_Address].ToString())
                 .Distinct();
+
+            Log.Information("Resolving {count} Address to property references", addresses.Count());
 
             var map = await gateway.GetPropertyReferences(addresses);
 

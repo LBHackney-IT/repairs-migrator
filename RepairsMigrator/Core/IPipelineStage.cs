@@ -8,6 +8,8 @@ namespace Core
 {
     public interface IPipelineStage
     {
+        Task Startup();
+        Task TearDown();
         Task Process(PropertyBag bag);
     }
 
@@ -30,5 +32,7 @@ namespace Core
         }
 
         public abstract Task Process(T model);
+        public virtual Task Startup() => Task.CompletedTask;
+        public virtual Task TearDown() => Task.CompletedTask;
     }
 }

@@ -20,8 +20,6 @@
         public const string Property_Reference = "Property_Reference";
         public const string Master_Block_Ref = "Master_Block_Ref";
         public const string Master_Block_Name = "Master_Block_Name";
-        public const string Sub_Block_Ref = "Sub_Block_Ref";
-        public const string Sub_Block_Name = "Sub_Block_Name";
         public const string Block_Range_Or_Estate = "Block_Range_Or_Estate";
         public const string HOC = "HOC";
         public const string Nominal_Code = "Nominal_Code";
@@ -48,5 +46,11 @@
         public const string Date = "Date";
         public const string Time = "Time"; // TODO: Build date and time into temp workorder
         public const string Aggregated_Client_Info = "Aggregated_Client_Info"; //  TODO: UnPick contact info
+        public const string Sub_Block_Ref = "Sub_Block_Ref";
+        public const string Sub_Block_Name = "Sub_Block_Name";
+        public const string Block_Ref = "Block_Ref";
+        public const string Block_Name = "Block_Name";
+        public const string Estate_Ref = "Estate_Ref";
+        public const string Estate_Name = "Estate_Name";
     }
 }

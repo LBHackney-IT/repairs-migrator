@@ -19,10 +19,14 @@ namespace Core
 
         public async Task Process(IEnumerable<PropertyBag> bags)
         {
+            await stage.Startup();
+
             foreach (var item in bags)
             {
                 await stage.Process(item);
             }
+
+            await stage.TearDown();
         }
     }
 }

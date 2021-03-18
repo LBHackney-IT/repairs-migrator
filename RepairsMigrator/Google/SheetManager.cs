@@ -25,15 +25,15 @@ namespace Google
             });
         }
 
-        public async Task<IEnumerable<TModel>> LoadSheet<TModel>(string sheetId, string sheetName)
+        public async Task<IEnumerable<TModel>> LoadSheet<TModel>(string sheetId, string sheetName, int skip = 0)
             where TModel : class, new()
         {
-            return (await LoadSheet(sheetId, sheetName, typeof(TModel))).Cast<TModel>();
+            return (await LoadSheet(sheetId, sheetName, typeof(TModel), skip)).Cast<TModel>();
         }
 
-        public Task<IEnumerable<object>> LoadSheet(string sheetId, string sheetName, Type type)
+        public Task<IEnumerable<object>> LoadSheet(string sheetId, string sheetName, Type type, int skip = 0)
         {
-            return new SheetLoader(service, sheetId, sheetName, type).LoadSheet();
+            return new SheetLoader(service, sheetId, sheetName, type, skip).LoadSheet();
         }
     }
 }

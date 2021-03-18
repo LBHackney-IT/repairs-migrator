@@ -50,8 +50,13 @@ namespace CSV
     {
         public static void SaveCsv<T>(string path, IEnumerable<T> data)
         {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                TrimOptions = TrimOptions.Trim
+            };
+
             using (var writer = new StreamWriter(path))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            using (var csv = new CsvWriter(writer, config))
                 csv.WriteRecords(data);
         }
 
@@ -66,9 +71,13 @@ namespace CSV
     {
         public void SaveCsv(string path, IEnumerable<object> data)
         {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                TrimOptions = TrimOptions.Trim
+            };
             this.AddRange(data.Cast<T>());
             using (var writer = new StreamWriter(path))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            using (var csv = new CsvWriter(writer, config))
                 csv.WriteRecords(this);
         }
     }

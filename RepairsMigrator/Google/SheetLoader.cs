@@ -17,13 +17,15 @@ namespace Google
         private readonly string sheetId;
         private readonly string sheetName;
         private readonly Type type;
+        private readonly int? skip;
 
-        public SheetLoader(SheetsService service, string sheetId, string sheetName, Type type)
+        public SheetLoader(SheetsService service, string sheetId, string sheetName, Type type, int? skip = null)
         {
             this.service = service;
             this.sheetId = sheetId;
             this.sheetName = sheetName;
             this.type = type;
+            this.skip = skip;
         }
 
         public async Task<IEnumerable<object>> LoadSheet()
@@ -52,7 +54,8 @@ namespace Google
 
         private int CalculateRowsToSkip(IList<IList<object>> values)
         {
-            return values.First().Count() <= 1 ? 1 : 0; // TODO: This is a hack and this behaviour should be configured per sheet
+            if (this.skip.HasValue) return this.skip.Value;
+            return values.First().Count() <= 1 ? 1 : 0;
         }
 
         private List<object> LoadData(IList<IList<object>> values, Dictionary<int, PropertyInfo> propMap, Type type, int startFrom = 1)

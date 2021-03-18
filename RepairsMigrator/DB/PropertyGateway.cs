@@ -56,7 +56,45 @@ namespace DB
 
         public async Task<IEnumerable<HierarchyModel>> GetHierarchyDetails(IEnumerable<string> references)
         {
-            return new List<HierarchyModel>();
+            var connectionString = Configuration.Instance["ConnectionString"];
+
+            await using var conn = new NpgsqlConnection(connectionString);
+            await conn.OpenAsync();
+            var (tableName, columnName) = await WriteValues(references, conn);
+
+            List<HierarchyModel> result = new List<HierarchyModel>();
+            await using (var cmd = new NpgsqlCommand($@"
+            select 
+	            v.prop_ref, 
+	            v.short_address, 
+	            v.sub_block_ref, 
+	            v.sub_block_address,
+	            v.block_ref,
+	            v.block_address,
+	            v.estate_ref,
+	            v.estate_address
+	            from dbo.vw_property_hierarchy v
+            INNER JOIN {tableName} t ON t.{columnName} = v.prop_ref
+            ", conn))
+            await using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    result.Add(new HierarchyModel
+                    {
+                        PropReference = reader.GetValue(0) as string,
+                        PropAddress = reader.GetValue(1) as string,
+                        SubblockReference = reader.GetValue(2) as string,
+                        SubblockAddress = reader.GetValue(3) as string,
+                        BlockReference = reader.GetValue(4) as string,
+                        BlockAddress = reader.GetValue(5) as string,
+                        EstateReference = reader.GetValue(6) as string,
+                        EstateAddress = reader.GetValue(7) as string,
+                    });
+                }
+            }
+
+            return result;
         }
     }
 
@@ -66,8 +104,8 @@ namespace DB
         public string PropAddress { get; set; }
         public string SubblockReference { get; set; }
         public string SubblockAddress { get; set; }
-        public string BlockReferece { get; set; }
-        public string BlockAdress { get; set; }
+        public string BlockReference { get; set; }
+        public string BlockAddress { get; set; }
         public string EstateReference { get; set; }
         public string EstateAddress { get; set; }
     }
