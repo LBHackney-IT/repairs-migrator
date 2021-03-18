@@ -8,7 +8,7 @@ namespace RepairsMigrator.Test
     public class FinanceIntegrationStageTests
     {
         [Fact]
-        public async Task LoadFinanceSheet()
+        public async Task CheckFinanceSheetLoads()
         {
             var sut = new FinanceIntegrationStage();
 
