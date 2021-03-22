@@ -9,26 +9,34 @@ namespace DB
     public class PropertyGateway
     {
         
-        public async Task<Dictionary<string, string>> GetPropertyReferences(IEnumerable<string> addresses)
+        public async Task<Dictionary<string, PropRefModel>> GetPropertyReferences(IEnumerable<string> addresses)
         {
             var connectionString = Configuration.Instance["ConnectionString"];
 
             await using var conn = new NpgsqlConnection(connectionString);
             await conn.OpenAsync();
 
-            var (tableName, columnName) = await WriteValues(addresses, conn);
-
-            Dictionary<string, string> result = new Dictionary<string, string>();
-            await using (var cmd = new NpgsqlCommand($"select {columnName}, 'test' from {tableName}", conn))
+            Dictionary<string, PropRefModel> result = new Dictionary<string, PropRefModel>();
+            await using (var cmd = new NpgsqlCommand("select address, prop_ref, short_address from dbo.property_matching", conn))
             await using (var reader = await cmd.ExecuteReaderAsync())
             {
                 while (await reader.ReadAsync())
                 {
-                    result.Add(reader.GetString(0), reader.GetString(1));
+                    result.Add(reader.GetString(0), new PropRefModel
+                    {
+                        PropRef = reader.GetString(1),
+                        ResolvedAddress = reader.GetString(2)
+                    });
                 }
             }
 
             return result;
+        }
+
+        public class PropRefModel
+        {
+            public string PropRef { get; set; }
+            public string ResolvedAddress { get; set; }
         }
 
         private static async Task<(string tablename, string columnName)> WriteValues(IEnumerable<string> values, NpgsqlConnection conn)
@@ -72,7 +80,8 @@ namespace DB
 	            v.block_ref,
 	            v.block_address,
 	            v.estate_ref,
-	            v.estate_address
+	            v.estate_address,
+                v.level_code
 	            from dbo.vw_property_hierarchy v
             INNER JOIN {tableName} t ON t.{columnName} = v.prop_ref
             ", conn))
@@ -90,6 +99,7 @@ namespace DB
                         BlockAddress = reader.GetValue(5) as string,
                         EstateReference = reader.GetValue(6) as string,
                         EstateAddress = reader.GetValue(7) as string,
+                        LevelCode = reader.GetValue(8) as string,
                     });
                 }
             }
@@ -108,5 +118,6 @@ namespace DB
         public string BlockAddress { get; set; }
         public string EstateReference { get; set; }
         public string EstateAddress { get; set; }
+        public string LevelCode { get; set; }
     }
 }

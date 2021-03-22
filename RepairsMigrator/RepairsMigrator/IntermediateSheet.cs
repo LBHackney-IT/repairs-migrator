@@ -28,7 +28,9 @@ namespace RepairsMigrator
         public string Time { get; set; }
 
         // Property
+        public string Original_Address { get; set; }
         public string Short_Address { get; set; }
+        public string IsCommunal { get; set; }
         public string Property_Reference { get; set; }
         public string Sub_Block_Ref { get; set; }
         public string Sub_Block_Name { get; set; }

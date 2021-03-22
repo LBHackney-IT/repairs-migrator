@@ -52,5 +52,10 @@
         public const string Block_Name = "Block_Name";
         public const string Estate_Ref = "Estate_Ref";
         public const string Estate_Name = "Estate_Name";
+        public const string Level_Code = "Level_Code";
+        public const string Level_Code_String = "Level_Code_String";
+        public const string IsCommunal = "IsCommunal";
+        public const string CommunalReason = "CommunalReason";
+        public const string Original_Address = "Original_Address";
     }
 }

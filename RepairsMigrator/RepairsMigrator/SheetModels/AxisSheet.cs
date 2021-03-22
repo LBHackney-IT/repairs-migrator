@@ -11,6 +11,7 @@ namespace RepairsMigrator.SheetModels
         public string Email_address { get; set; }
         
         [PropertyKey(Keys.Short_Address)]
+        [PropertyKey(Keys.Original_Address)]
         public string Property_Address { get; set; }
         
         [PropertyKey(Keys.Work_Order_Reference)]

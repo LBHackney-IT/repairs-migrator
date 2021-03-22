@@ -16,6 +16,7 @@ namespace RepairsMigrator.SheetModels
         public string Name_of_resident { get; set; }
         
         [PropertyKey(Keys.Short_Address)]
+        [PropertyKey(Keys.Original_Address)]
         public string Address_of_repair { get; set; }
         
         [PropertyKey(Keys.Clients_Number)]

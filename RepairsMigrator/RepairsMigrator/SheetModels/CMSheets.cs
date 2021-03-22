@@ -9,6 +9,7 @@ namespace RepairsMigrator.SheetModels
     partial class CMSheet : IAppColumns
     {
         [PropertyKey(Keys.Short_Address)]
+        [PropertyKey(Keys.Original_Address)]
         public string Address { get; set; }
 
         [PropertyKey(Keys.Description)]

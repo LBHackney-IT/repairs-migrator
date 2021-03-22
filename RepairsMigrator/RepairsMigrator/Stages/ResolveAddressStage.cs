@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DB;
 using Serilog;
+using static DB.PropertyGateway;
 
 namespace RepairsMigrator.Stages
 {
@@ -34,7 +35,7 @@ namespace RepairsMigrator.Stages
             }
         }
 
-        private static void AttachPropRef(PropertyBag bag, Dictionary<string, string> map)
+        private static void AttachPropRef(PropertyBag bag, Dictionary<string, PropRefModel> map)
         {
             var existingPropRef = bag.GetMaybe(Keys.Property_Reference);
             var address = bag.GetMaybe(Keys.Short_Address);
@@ -46,15 +47,14 @@ namespace RepairsMigrator.Stages
                 return;
             }
 
-            var newPropRef = map[address];
-
-            if (newPropRef.IsNull())
+            if (map.TryGetValue(address, out var newPropRef))
             {
-                bag.AddError("Could not map to a single UH property");
+                bag[Keys.Property_Reference] = newPropRef.PropRef;
+                bag[Keys.Short_Address] = newPropRef.ResolvedAddress;
                 return;
             }
 
-            bag[Keys.Property_Reference] = newPropRef;
+            bag.AddError("Could not map to a single UH property");
         }
     }
 }

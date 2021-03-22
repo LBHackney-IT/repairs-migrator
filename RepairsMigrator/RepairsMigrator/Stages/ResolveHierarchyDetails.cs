@@ -47,6 +47,7 @@ namespace RepairsMigrator.Stages
                 bag[Keys.Block_Name] = data.BlockAddress;
                 bag[Keys.Estate_Ref] = data.EstateReference;
                 bag[Keys.Estate_Name] = data.EstateAddress;
+                bag[Keys.Level_Code] = data.LevelCode;
             } else
             {
                 bag.AddError("No Matching property was found for property reference");

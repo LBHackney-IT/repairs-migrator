@@ -22,6 +22,7 @@ namespace RepairsMigrator.SheetModels
         public string Time { get; set; }
         
         [PropertyKey(Keys.Short_Address)]
+        [PropertyKey(Keys.Original_Address)]
         public string Property_Address { get; set; }
         
         [PropertyKey(Keys.Aggregated_Client_Info)]
