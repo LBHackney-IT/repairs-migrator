@@ -43,7 +43,7 @@ namespace RepairsMigrator.Stages
             if (existingPropRef.IsNotNull()) return;
             if (address.IsNull())
             {
-                bag.AddError("No Address to resolve property reference");
+                bag.AddError(ErrorKeys.MissingAddress);
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace RepairsMigrator.Stages
                 return;
             }
 
-            bag.AddError("Could not map to a single UH property");
+            bag.AddError(ErrorKeys.FailedToMatchToASinglePropertyReference);
         }
     }
 }

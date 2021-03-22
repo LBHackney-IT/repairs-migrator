@@ -7,13 +7,6 @@ namespace Core
 {
     public class PropertyBag : Dictionary<string, object>
     {
-        private readonly IList<string> errors;
-
-        public PropertyBag()
-        {
-            this.errors = new List<string>();
-        }
-
         internal T To<T>()
             where T : class, new()
         {
@@ -34,14 +27,7 @@ namespace Core
                 }
             }
 
-            AttachErrors(model);
-
             return model;
-        }
-
-        private void AttachErrors<T>(T model) where T : class, new()
-        {
-            if (model is IHasErrors withErrors) withErrors.Errors = this.errors;
         }
 
         internal static PropertyBag From<T>(T inModel)
@@ -57,7 +43,12 @@ namespace Core
 
             return bag;
         }
-        
+
+        public void AddError(string error)
+        {
+            this[error] = "True";
+        }
+
         internal void Apply<T>(T model)
             where T : class
         {
@@ -81,11 +72,6 @@ namespace Core
                     }
                 }
             }
-        }
-
-        public void AddError(string error)
-        {
-            this.errors.Add(error);
         }
 
         private static bool TryGetPropBagKey(MemberInfo prop, out string key)

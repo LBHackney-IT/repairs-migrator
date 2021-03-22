@@ -23,7 +23,7 @@ namespace RepairsMigrator.Stages
             this.data = GroupFinanceData(raw);
         }
 
-        private Dictionary<string, IList<FinanceData>> GroupFinanceData(IEnumerable<FinanceData> raw)
+        private static Dictionary<string, IList<FinanceData>> GroupFinanceData(IEnumerable<FinanceData> raw)
         {
             var result = new Dictionary<string, IList<FinanceData>>();
 
@@ -66,19 +66,19 @@ namespace RepairsMigrator.Stages
             }
             else
             {
-                LogError("No Finance Data Associated With WorkOrder Reference");
+                LogError(ErrorKeys.NoFinance);
             }
         }
 
         private void ProcessFinanceData(WorkOrder model, IList<FinanceData> financeData)
         {
-            if (financeData.Count() == 1)
+            if (financeData.Count == 1)
             {
                 AttachData(model, financeData);
             }
             else
             {
-                LogError("More than one finance record for work order");
+                LogError(ErrorKeys.MultipleFinance);
             }
         }
 

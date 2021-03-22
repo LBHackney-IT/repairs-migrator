@@ -43,12 +43,14 @@ namespace RepairsMigrator.Stages
             {
                 model.IsCommunal = TRUE;
                 model.CommunalReason = "Communal Property";
+                return Task.CompletedTask;
             }
 
-            if (communalKeywords.Any(kw => model.Description.Contains(kw)))
+            if (communalKeywords.Any(kw => model.Description.ToLower().Contains(kw.ToLower())))
             {
                 model.IsCommunal = TRUE;
                 model.CommunalReason = "Found Communal Keywork\n in job description";
+                return Task.CompletedTask;
             }
             
             model.IsCommunal = FALSE;

@@ -45,7 +45,7 @@ namespace Core.Test
         public string Value { get; set; }
     }
 
-    internal class ErrorTestOutModel : IHasErrors
+    internal class ErrorTestOutModel
     {
         [PropertyKey(Keys.Input)]
         public string InputValue { get; set; }

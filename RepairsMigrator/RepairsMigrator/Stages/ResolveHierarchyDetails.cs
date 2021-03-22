@@ -34,7 +34,7 @@ namespace RepairsMigrator.Stages
         {
             if (!bag.ContainsKey(Keys.Property_Reference) || string.IsNullOrWhiteSpace(bag[Keys.Property_Reference].ToString()))
             {
-                bag.AddError("No property reference to map address to");
+                bag.AddError(ErrorKeys.NoPropRefForHierarchy);
                 return;
             }
             var propRef = bag[Keys.Property_Reference].ToString();
@@ -50,7 +50,7 @@ namespace RepairsMigrator.Stages
                 bag[Keys.Level_Code] = data.LevelCode;
             } else
             {
-                bag.AddError("No Matching property was found for property reference");
+                bag.AddError(ErrorKeys.FailedToMatchToASinglePropertyReference);
             }
 
 

@@ -31,6 +31,7 @@ namespace RepairsMigrator
         public string Original_Address { get; set; }
         public string Short_Address { get; set; }
         public string IsCommunal { get; set; }
+        public string CommunalReason { get; set; }
         public string Property_Reference { get; set; }
         public string Sub_Block_Ref { get; set; }
         public string Sub_Block_Name { get; set; }
@@ -57,5 +58,13 @@ namespace RepairsMigrator
         // Misc
         public string SourceRow { get; set; }
         public string SourceDescription { get; set; }
+
+        public string NoFinance { get; set; }
+        public string MultipleFinance { get; set; }
+        public string MissingAddress { get; set; }
+        public string MultipleAddresses { get; set; }
+        public string CouldNotResolvePropRef { get; set; }
+        public string NoPropRefForHierarchy { get; set; }
+        public string FailedToMatchToASinglePropertyReference { get; set; }
     }
 }
