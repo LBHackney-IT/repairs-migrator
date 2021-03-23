@@ -29,7 +29,21 @@ namespace RepairsMigrator.Stages
             "Guttering",
             "Communal",
             "Barrier Gate",
-            "Asphalt"
+            "Asphalt",
+            "Door entry",
+            "Lift",
+            "outside number",
+            "Bulkhead",
+            "Bollard",
+            "Play Area",
+            "Tarmac",
+            "Paving",
+            " MUGA "
+        };
+
+        private readonly int[] communalPropRefs =
+        {
+            2, 3, 4, 6
         };
 
         public override Task Process(CommunalModel model)
@@ -39,7 +53,7 @@ namespace RepairsMigrator.Stages
                 return Task.CompletedTask;
             }
 
-            if (int.Parse(model.LevelCode) == 6)
+            if (communalPropRefs.Contains(int.Parse(model.LevelCode)))
             {
                 model.IsCommunal = TRUE;
                 model.CommunalReason = "Communal Property";
