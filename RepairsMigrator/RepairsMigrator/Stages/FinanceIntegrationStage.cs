@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 using Google;
 using Google.Apis.Auth.OAuth2;
 using Serilog;
@@ -19,7 +19,7 @@ namespace RepairsMigrator.Stages
             Log.Information("Processing Finance Records");
             successfulsRuns = 0;
             var manager = new SheetManager("RepairsMigration", GoogleCredential.FromFile("Resources/creds.json"));
-            IEnumerable<FinanceData> raw = await manager.LoadSheet<FinanceData>("1lOjlnnHs8S8zii0HALnqj7vyAL0uBk3Kn0oyo0EIskI", "PAYMENTS", 2);
+            IEnumerable<FinanceData> raw = await manager.LoadSheet<FinanceData>("1GSsvMcX3Rm0Lh1mMQiV-VvN6pTh8IghbA-3icBQP1cc", "PAYMENTS", 2);
             this.data = GroupFinanceData(raw);
         }
 
