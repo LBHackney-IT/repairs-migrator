@@ -31,7 +31,7 @@ namespace RepairsMigrator.SheetModels
         [PropertyKey(Keys.Trade)]
         public string Which_trade_needs_to_respond_to_repair { get; set; }
         
-        [PropertyKey(Keys.Description)]
+        [PropertyKey(Keys.Priority)]
         public string What_is_the_priority_for_the_repair { get; set; }
         
         [PropertyKey(Keys.AppointmentDate)]
