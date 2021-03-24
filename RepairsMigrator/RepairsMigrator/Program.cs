@@ -25,6 +25,13 @@ namespace RepairsMigrator
     |_|  |_| |_|\___|    |_|\___/ \___/|_|
 ===========================================
 ");
+
+            Console.WriteLine(@"
+Manual Preflight checks:
+* Update finance sheet
+* Update contract manager sheet
+* Update property matching table
+");
 #if DEBUG 
             Console.WriteLine("Running In Debug");
             var logFile = "log.txt";
@@ -50,8 +57,8 @@ namespace RepairsMigrator
                 .With(new WorkOrderResolutionStage())
                 .With(new ResolveAddressStage())
                 .With(new ResolveHierarchyDetails())
-                .With(new FinanceIntegrationStage())
                 .With(new ResolveCommunalStage())
+                .With(new FinanceIntegrationStage(onlyCommunals: true, threshold: 120))
                 .Build();
 #if DEBUG
             await CSVRunner.LoadSheetsForTest();

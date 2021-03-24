@@ -1,4 +1,5 @@
 using Core;
+using FuzzySharp;
 using Google;
 using Google.Apis.Auth.OAuth2;
 using Serilog;
@@ -11,8 +12,16 @@ namespace RepairsMigrator.Stages
 {
     public class FinanceIntegrationStage : PipelineStage<WorkOrder>
     {
-        private Dictionary<string, IList<FinanceData>> data;
+        private IEnumerable<FinanceData> data;
         private int successfulsRuns;
+        private readonly bool onlyCommunals;
+        private readonly int threshold;
+
+        public FinanceIntegrationStage(bool onlyCommunals = false, int threshold = 0)
+        {
+            this.onlyCommunals = onlyCommunals;
+            this.threshold = threshold;
+        }
 
         public override async Task Startup()
         {
@@ -20,76 +29,66 @@ namespace RepairsMigrator.Stages
             successfulsRuns = 0;
             var manager = new SheetManager("RepairsMigration", GoogleCredential.FromFile("Resources/creds.json"));
             IEnumerable<FinanceData> raw = await manager.LoadSheet<FinanceData>("1GSsvMcX3Rm0Lh1mMQiV-VvN6pTh8IghbA-3icBQP1cc", "PAYMENTS", 2);
-            this.data = GroupFinanceData(raw);
-        }
-
-        private static Dictionary<string, IList<FinanceData>> GroupFinanceData(IEnumerable<FinanceData> raw)
-        {
-            var result = new Dictionary<string, IList<FinanceData>>();
-
-            foreach (var item in raw)
-            {
-                AddItem(result, item);
-            }
-
-            return result;
-        }
-
-        private static void AddItem(Dictionary<string, IList<FinanceData>> result, FinanceData item)
-        {
-            var key = item.UH_job_No?.ToLowerInvariant().Trim();
-
-            if (key is null) return;
-
-            if (!result.ContainsKey(key))
-            {
-                result[key] = new List<FinanceData>();
-            }
-
-            result[key].Add(item);
+            this.data = raw;
         }
 
         public override Task Process(WorkOrder model)
         {
+            if (onlyCommunals && model.IsCommunal != "True")
+            {
+                return Task.CompletedTask;
+            }
 
-            TryProcessFinanceData(model);
+            FindBestFit(model);
 
             return Task.CompletedTask;
         }
 
-        private void TryProcessFinanceData(WorkOrder model)
+        private void FindBestFit(WorkOrder model)
         {
-            if (!string.IsNullOrWhiteSpace(model.WorkOrderReference) 
-                && data.TryGetValue(model.WorkOrderReference.ToLowerInvariant().Trim(), out var financeData))
+            int maxHeuristic = 0;
+            FinanceData finance_data = null;
+            foreach (var item in data)
             {
-                ProcessFinanceData(model, financeData);
+                if (WorkOrdersMatch(model, item))
+                {
+                    AttachData(model, item);
+                    return;
+                }
+
+                if (!string.IsNullOrWhiteSpace(item.Job_Description)
+                    && !string.IsNullOrWhiteSpace(item.Address)
+                    && !string.IsNullOrWhiteSpace(model.Address)
+                    && !string.IsNullOrWhiteSpace(model.JobDescription))
+                {
+                    var job_description_match_heuristic = Fuzz.Ratio(item.Job_Description, model.JobDescription);
+                    var address_heuristic = Fuzz.Ratio(item.Address, model.Address);
+
+                    if (job_description_match_heuristic + address_heuristic > maxHeuristic)
+                    {
+                        maxHeuristic = job_description_match_heuristic + address_heuristic;
+                        finance_data = item;
+                    }
+                }
             }
-            else
+
+            if (maxHeuristic > threshold)
             {
-                LogError(ErrorKeys.NoFinance);
+                AttachData(model, finance_data);
             }
         }
 
-        private void ProcessFinanceData(WorkOrder model, IList<FinanceData> financeData)
+        private static bool WorkOrdersMatch(WorkOrder model, FinanceData item)
         {
-            if (financeData.Count == 1)
-            {
-                AttachData(model, financeData);
-            }
-            else
-            {
-                LogError(ErrorKeys.MultipleFinance);
-            }
+            return item.UH_job_No?.ToLowerInvariant().Trim() == model.WorkOrderReference?.ToLowerInvariant().Trim();
         }
 
-        private void AttachData(WorkOrder model, IList<FinanceData> financeData)
+        private void AttachData(WorkOrder model, FinanceData item)
         {
-            var record = financeData.Single();
-
-            model.LocalSubJective = record.Local_subj;
-            model.CorpSubjective = record.Corp_subj;
-            model.InvoiceDate = record.Invoice_date;
-            model.InvoiceCost = record.Amount;
+            model.LocalSubJective = item.Local_subj;
+            model.CorpSubjective = item.Corp_subj;
+            model.InvoiceCost = item.Amount;
+            model.InvoiceDate = item.Invoice_date;
             successfulsRuns++;
         }
 
@@ -102,8 +101,22 @@ namespace RepairsMigrator.Stages
 
     public class WorkOrder
     {
+        public string line_number { get; set; } = null;
+
         [PropertyKey(Keys.Work_Order_Reference)]
         public string WorkOrderReference { get; set; }
+
+        [PropertyKey(Keys.IsCommunal)]
+        public string IsCommunal { get; set; }
+
+        [PropertyKey(Keys.Created_Date)]
+        public string DateCreated { get; set; }
+
+        [PropertyKey(Keys.Description)]
+        public string JobDescription { get; set; }
+
+        [PropertyKey(Keys.Original_Address)]
+        public string Address { get; set; }
 
         [PropertyKey(Keys.Local_Subj_Code)]
         public string LocalSubJective { get; set; }

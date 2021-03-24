@@ -1,4 +1,5 @@
 ﻿using Core;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace RepairsMigrator.Stages
     {
         private const string TRUE = "True";
         private const string FALSE = "False";
+        private int successfulsRuns;
 
         private readonly string[] communalKeywords =
         {
@@ -46,6 +48,12 @@ namespace RepairsMigrator.Stages
             2, 3, 4, 6
         };
 
+        public override Task Startup()
+        {
+            successfulsRuns = 0;
+            return base.Startup();
+        }
+
         public override Task Process(CommunalModel model)
         {
             if (string.IsNullOrWhiteSpace(model.LevelCode))
@@ -57,6 +65,7 @@ namespace RepairsMigrator.Stages
             {
                 model.IsCommunal = TRUE;
                 model.CommunalReason = "Communal Property";
+                successfulsRuns++;
                 return Task.CompletedTask;
             }
 
@@ -64,12 +73,19 @@ namespace RepairsMigrator.Stages
             {
                 model.IsCommunal = TRUE;
                 model.CommunalReason = "Found Communal Keywork\n in job description";
+                successfulsRuns++;
                 return Task.CompletedTask;
             }
             
             model.IsCommunal = FALSE;
 
             return Task.CompletedTask;
+        }
+
+        public override Task TearDown()
+        {
+            Log.Information("{count} communal orders found", successfulsRuns);
+            return base.TearDown();
         }
     }
 
