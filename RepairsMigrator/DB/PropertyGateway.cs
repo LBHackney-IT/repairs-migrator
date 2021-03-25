@@ -17,7 +17,7 @@ namespace DB
             await conn.OpenAsync();
 
             Dictionary<string, PropRefModel> result = new Dictionary<string, PropRefModel>();
-            await using (var cmd = new NpgsqlCommand("select address, prop_ref, short_address from dbo.property_matching", conn))
+            await using (var cmd = new NpgsqlCommand("select address, prop_ref, short_address from migration.property_matching", conn))
             await using (var reader = await cmd.ExecuteReaderAsync())
             {
                 while (await reader.ReadAsync())
@@ -31,6 +31,27 @@ namespace DB
             }
 
             return result;
+        }
+
+        public static async Task LoadAddressStore(IEnumerable<string> addresses)
+        {
+            var connectionString = Configuration.Instance["ConnectionString"];
+
+            await using var conn = new NpgsqlConnection(connectionString);
+            await conn.OpenAsync();
+            await using (var cmd = new NpgsqlCommand("TRUNCATE migration.address_store", conn))
+                await cmd.ExecuteNonQueryAsync();
+
+            using (var writer = conn.BeginBinaryImport("COPY migration.address_store (address) FROM STDIN (FORMAT BINARY)"))
+            {
+                foreach (var value in addresses)
+                {
+                    writer.StartRow();
+                    writer.Write(value);
+                }
+
+                writer.Complete();
+            }
         }
 
         public class PropRefModel
@@ -87,7 +108,7 @@ namespace DB
                 v.lu_desc,
                 v.cat_type,
                 v.rep_area
-	            from dbo.vw_property_hierarchy v
+	            from migration.vw_property_hierarchy v
             INNER JOIN {tableName} t ON t.{columnName} = v.prop_ref
             ", conn))
             await using (var reader = await cmd.ExecuteReaderAsync())

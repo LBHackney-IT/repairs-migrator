@@ -1,11 +1,6 @@
 ﻿using Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using DB;
-using Serilog;
 using static DB.PropertyGateway;
 
 namespace RepairsMigrator.Stages
@@ -14,19 +9,6 @@ namespace RepairsMigrator.Stages
     {
         public async Task<IEnumerable<PropertyBag>> Process(IEnumerable<PropertyBag> bags)
         {
-             
-             
-            var gateway = new PropertyGateway();
-
-            var addresses = bags
-                .Where(b =>
-                    !b.ContainsKey(Keys.Property_Reference)
-                    || string.IsNullOrWhiteSpace(b[Keys.Property_Reference].ToString()))
-                .Select(b => b[Keys.Short_Address].ToString())
-                .Distinct();
-
-            Log.Information("Resolving {count} Address to property references", addresses.Count());
-
             var map = await GetPropertyReferences();
 
             foreach (var bag in bags)
