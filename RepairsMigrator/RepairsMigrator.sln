@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepairsMigrator", "RepairsMigrator\RepairsMigrator.csproj", "{CF2E68AF-D57D-473C-B2BC-6667F16EFE47}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Test", "Core.Test\Core.Test.csproj", "{BF253559-04B4-43A5-9195-58C61F5AE607}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{2B961496-A6BA-42CA-B20E-BD5DA941C167}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSV", "CSV\CSV.csproj", "{493BCB9E-2588-44CD-9C4E-ABDB8505436A}"
@@ -19,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB.Test", "DB.Test\DB.Test.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepairsMigrator.Test", "RepairsMigrator.Test\RepairsMigrator.Test.csproj", "{DB27038B-31BD-4534-A155-C5BDA69E8A93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SheetSplitter", "SheetSplitter\SheetSplitter.csproj", "{8051BCD9-4AFD-4AFE-8B31-AB697E64F406}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SheetSplitter", "SheetSplitter\SheetSplitter.csproj", "{8051BCD9-4AFD-4AFE-8B31-AB697E64F406}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{CF2E68AF-D57D-473C-B2BC-6667F16EFE47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF2E68AF-D57D-473C-B2BC-6667F16EFE47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF2E68AF-D57D-473C-B2BC-6667F16EFE47}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF253559-04B4-43A5-9195-58C61F5AE607}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF253559-04B4-43A5-9195-58C61F5AE607}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF253559-04B4-43A5-9195-58C61F5AE607}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF253559-04B4-43A5-9195-58C61F5AE607}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B961496-A6BA-42CA-B20E-BD5DA941C167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B961496-A6BA-42CA-B20E-BD5DA941C167}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B961496-A6BA-42CA-B20E-BD5DA941C167}.Release|Any CPU.ActiveCfg = Release|Any CPU

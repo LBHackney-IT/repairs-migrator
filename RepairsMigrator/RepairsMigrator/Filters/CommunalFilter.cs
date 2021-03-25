@@ -11,7 +11,7 @@ namespace RepairsMigrator.Filters
     {
         public bool IsValid(PropertyBag bag)
         {
-            return bag[Keys.IsCommunal].ToString() == "True";
+            return bag.TryGetValue(Keys.IsCommunal, out var ic) && ic?.ToString() == "True";
         }
     }
 }

@@ -25,8 +25,10 @@ namespace RepairsMigrator.Runners
             await pipeline.Run();
 
             var output = pipeline.Out<IntermediateSheet>();
+            var leaseholder = pipeline.Out<LeaseHolderReportSheet>();
 
             CSVSaver.SaveCsv("out_csv.csv", output);
+            CSVSaver.SaveCsv("out_leaseholder.csv", leaseholder);
         }
 
         private static IEnumerable<object> LoadCSV(string name, Type type)

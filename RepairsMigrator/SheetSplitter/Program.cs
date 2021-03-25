@@ -13,10 +13,9 @@ namespace SheetSplitter
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             CreateDirectories();
-
             var manager = new SheetManager("RepairsMigration", GoogleCredential.FromFile("Resources/creds.json"));
             IEnumerable<FinanceData> finance = manager.LoadSheet<FinanceData>("1GSsvMcX3Rm0Lh1mMQiV-VvN6pTh8IghbA-3icBQP1cc", "PAYMENTS", 2).Result;
 

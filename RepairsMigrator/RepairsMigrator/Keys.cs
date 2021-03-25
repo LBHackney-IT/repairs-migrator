@@ -23,7 +23,6 @@
         public const string Block_Range_Or_Estate = "Block_Range_Or_Estate";
         public const string HOC = "HOC";
         public const string Nominal_Code = "Nominal_Code";
-        public const string Date_Raised = "Nominal_Code";
         public const string Completion_Date = "Completion_Date";
         public const string Work_Order_completion_date = "Work_Order_completion_date";
         public const string Est_Cost_After_Variation = "Est_Cost_After_Variation";
@@ -51,11 +50,18 @@
         public const string Block_Ref = "Block_Ref";
         public const string Block_Name = "Block_Name";
         public const string Estate_Ref = "Estate_Ref";
+        public const string Owner_ref = "Owner_ref";
+        public const string Owner_Name = "Owner_Name";
         public const string Estate_Name = "Estate_Name";
         public const string Level_Code = "Level_Code";
         public const string Level_Code_String = "Level_Code_String";
         public const string IsCommunal = "IsCommunal";
         public const string CommunalReason = "CommunalReason";
         public const string Original_Address = "Original_Address";
+
+        public const string Parent_Address = "Parent_Address";
+        public const string Parent_Reference = "Parent_Reference";
+        public const string Grandparent_Address = "Grandparent_Address";
+        public const string Grandparent_Reference = "Grandparent_Reference";
     }
 }

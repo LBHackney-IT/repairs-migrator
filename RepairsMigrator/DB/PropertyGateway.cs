@@ -9,7 +9,7 @@ namespace DB
     public class PropertyGateway
     {
         
-        public async Task<Dictionary<string, PropRefModel>> GetPropertyReferences(IEnumerable<string> addresses)
+        public static async Task<Dictionary<string, PropRefModel>> GetPropertyReferences()
         {
             var connectionString = Configuration.Instance["ConnectionString"];
 
@@ -62,7 +62,7 @@ namespace DB
             return ("tmp_store", "cValue");
         }
 
-        public async Task<IEnumerable<HierarchyModel>> GetHierarchyDetails(IEnumerable<string> references)
+        public static async Task<IEnumerable<HierarchyModel>> GetHierarchyDetails(IEnumerable<string> references)
         {
             var connectionString = Configuration.Instance["ConnectionString"];
 
@@ -81,7 +81,12 @@ namespace DB
 	            v.block_address,
 	            v.estate_ref,
 	            v.estate_address,
-                v.level_code
+                v.level_code,
+                v.owner,
+                v.owner_address,
+                v.lu_desc,
+                v.cat_type,
+                v.rep_area
 	            from dbo.vw_property_hierarchy v
             INNER JOIN {tableName} t ON t.{columnName} = v.prop_ref
             ", conn))
@@ -100,6 +105,11 @@ namespace DB
                         EstateReference = reader.GetValue(6) as string,
                         EstateAddress = reader.GetValue(7) as string,
                         LevelCode = reader.GetValue(8) as string,
+                        OwnerReference = reader.GetValue(9) as string,
+                        OwnerAddress = reader.GetValue(10) as string,
+                        Level_Description = reader.GetValue(11) as string,
+                        Category_Type = reader.GetValue(12) as string,
+                        Rep_Area = reader.GetValue(13) as string,
                     });
                 }
             }
@@ -118,6 +128,11 @@ namespace DB
         public string BlockAddress { get; set; }
         public string EstateReference { get; set; }
         public string EstateAddress { get; set; }
+        public string OwnerReference { get; set; }
+        public string OwnerAddress { get; set; }
         public string LevelCode { get; set; }
+        public string Rep_Area { get; set; }
+        public string Level_Description { get; set; }
+        public string Category_Type { get; set; }
     }
 }

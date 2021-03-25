@@ -10,11 +10,11 @@ namespace RepairsMigrator.Stages
 {
     class LogStage : IBatchPipelineStage
     {
-        public Task Process(IEnumerable<PropertyBag> bags)
+        public Task<IEnumerable<PropertyBag>> Process(IEnumerable<PropertyBag> bags)
         {
             Log.Information("Processing {count} Records", bags.Count());
 
-            return Task.CompletedTask;
+            return Task.FromResult(bags);
         }
     }
 }

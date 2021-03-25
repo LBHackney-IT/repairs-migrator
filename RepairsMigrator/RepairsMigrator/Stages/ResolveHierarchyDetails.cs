@@ -11,7 +11,7 @@ namespace RepairsMigrator.Stages
 {
     class ResolveHierarchyDetails : IBatchPipelineStage
     {
-        public async Task Process(IEnumerable<PropertyBag> bags)
+        public async Task<IEnumerable<PropertyBag>> Process(IEnumerable<PropertyBag> bags)
         {
             var gateway = new PropertyGateway();
 
@@ -22,15 +22,17 @@ namespace RepairsMigrator.Stages
 
             Log.Information("Resolving {count} Unique Property Hierarchies", references.Count());
 
-            var details = await gateway.GetHierarchyDetails(references);
+            var details = await PropertyGateway.GetHierarchyDetails(references);
 
             foreach (var bag in bags)
             {
                 AttachHierarchy(bag, details.ToDictionary(d => d.PropReference.Trim()));
             }
+
+            return bags;
         }
 
-        private void AttachHierarchy(PropertyBag bag, Dictionary<string, HierarchyModel> details)
+        private static void AttachHierarchy(PropertyBag bag, Dictionary<string, HierarchyModel> details)
         {
             if (!bag.ContainsKey(Keys.Property_Reference) || string.IsNullOrWhiteSpace(bag[Keys.Property_Reference].ToString()))
             {
@@ -48,6 +50,11 @@ namespace RepairsMigrator.Stages
                 bag[Keys.Estate_Ref] = data.EstateReference;
                 bag[Keys.Estate_Name] = data.EstateAddress;
                 bag[Keys.Level_Code] = data.LevelCode;
+                bag[Keys.Owner_ref] = data.OwnerReference;
+                bag[Keys.Owner_Name] = data.OwnerAddress;
+                bag[Keys.Level_Description] = data.Level_Description;
+                bag[Keys.Neigh_Area] = data.Rep_Area;
+                bag[Keys.Category_Type] = data.Category_Type;
             } else
             {
                 bag.AddError(ErrorKeys.FailedToMatchToASinglePropertyReference);

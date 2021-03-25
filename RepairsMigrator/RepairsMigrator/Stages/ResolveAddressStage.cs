@@ -12,7 +12,7 @@ namespace RepairsMigrator.Stages
 {
     public class ResolveAddressStage : IBatchPipelineStage
     {
-        public async Task Process(IEnumerable<PropertyBag> bags)
+        public async Task<IEnumerable<PropertyBag>> Process(IEnumerable<PropertyBag> bags)
         {
              
              
@@ -27,12 +27,14 @@ namespace RepairsMigrator.Stages
 
             Log.Information("Resolving {count} Address to property references", addresses.Count());
 
-            var map = await gateway.GetPropertyReferences(addresses);
+            var map = await GetPropertyReferences();
 
             foreach (var bag in bags)
             {
                 AttachPropRef(bag, map);
             }
+
+            return bags;
         }
 
         private static void AttachPropRef(PropertyBag bag, Dictionary<string, PropRefModel> map)

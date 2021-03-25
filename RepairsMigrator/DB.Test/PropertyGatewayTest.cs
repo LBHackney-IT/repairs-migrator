@@ -11,12 +11,7 @@ namespace DB.Test
         [Fact]
         public async Task Test()
         {
-            var propGateway = new PropertyGateway();
-
-            var result = await propGateway.GetPropertyReferences(new List<string>
-            {
-                "address_test"
-            });
+            var result = await PropertyGateway.GetPropertyReferences();
 
             result.First().Key.Should().Be("address_test");
         }
