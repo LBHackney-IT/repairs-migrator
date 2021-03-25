@@ -54,11 +54,6 @@ namespace DB
 
                 writer.Complete();
             }
-
-            await using (var cmd = new NpgsqlCommand("CALL migration.update_address_lookup()", conn))
-            {
-                await cmd.ExecuteNonQueryAsync();
-            }
         }
 
         public class PropRefModel

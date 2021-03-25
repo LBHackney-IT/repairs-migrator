@@ -48,8 +48,8 @@ namespace RepairsMigrator
 
             var pipeline = new PipelineBuilder()
                 .With(new LogStage())
+                //.With(new LoadAddressStoreStage())
                 .With(new WorkOrderResolutionStage())
-                .With(new LoadAddressStoreStage())
                 .With(new ResolveAddressStage())
                 .With(new ResolveHierarchyDetails())
                 .With(new FinanceIntegrationStage())
