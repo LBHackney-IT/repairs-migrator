@@ -45,9 +45,11 @@ namespace RepairsMigrator
         public string CleanDescription { get; set; }
 
         [Name("HOC")]
+        [PropertyKey(Keys.HOC)]
         public string HOC { get; set; }
 
         [Name("Nominal Code")]
+        [PropertyKey(Keys.Nominal_Code)]
         public string NominalCode { get; set; }
 
         [Name("Date Job Raised")]
@@ -67,12 +69,15 @@ namespace RepairsMigrator
         public string EstCostAfterVariation { get; set; }
 
         [Name("Invoice Number")] //Finance
+        [PropertyKey(Keys.Invoice_Number)]
         public string InvoiceNumber { get; set; }
 
         [Name("Date of Invoice")] //Finance
+        [PropertyKey(Keys.Date_Of_Invoice)]
         public string DateOfInvoice { get; set; }
 
         [Name("Actual Cost of Invoice")] //Finance
+        [PropertyKey(Keys.Actual_cost_of_invoice)]
         public string ActualCostOfInvoice { get; set; }
 
         [Name("Level Description")]
@@ -80,12 +85,15 @@ namespace RepairsMigrator
         public string LevelDescription { get; set; }
 
         [Name("Corporate Subjective Code")] //Finance
+        [PropertyKey(Keys.Corp_Subj_Code)]
         public string CorpSubjectiveCode { get; set; }
 
         [Name("Local Subjective Code")] //Finance
+        [PropertyKey(Keys.Local_Subj_Code)]
         public string LocalSubjectiveCode { get; set; }
 
         [Name("Local Subjective")] //Finance
+        [PropertyKey(Keys.Local_Subj)]
         public string LocalSubjective { get; set; }
 
         [Name("Category Type")]

@@ -55,6 +55,7 @@ namespace RepairsMigrator
                 .With(new ResolveCommunalStage())
                 .With(new CommunalFilter())
                 .With(new FindPropertyParentsStage())
+                .With(new ResolveSupplierNameStage())
                 .Build();
 #if DEBUG
             await CSVRunner.LoadSheetsForTest();
