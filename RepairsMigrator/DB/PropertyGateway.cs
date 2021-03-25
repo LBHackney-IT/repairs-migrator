@@ -40,7 +40,9 @@ namespace DB
             await using var conn = new NpgsqlConnection(connectionString);
             await conn.OpenAsync();
             await using (var cmd = new NpgsqlCommand("TRUNCATE migration.address_store", conn))
+            {
                 await cmd.ExecuteNonQueryAsync();
+            }
 
             using (var writer = conn.BeginBinaryImport("COPY migration.address_store (address) FROM STDIN (FORMAT BINARY)"))
             {
@@ -51,6 +53,11 @@ namespace DB
                 }
 
                 writer.Complete();
+            }
+
+            await using (var cmd = new NpgsqlCommand("CALL migration.update_address_lookup()", conn))
+            {
+                await cmd.ExecuteNonQueryAsync();
             }
         }
 
