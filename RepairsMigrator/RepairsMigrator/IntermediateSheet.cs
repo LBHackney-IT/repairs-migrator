@@ -3,7 +3,7 @@
 namespace RepairsMigrator
 {
     [MapPropName]
-    class IntermediateSheet
+    public class IntermediateSheet
     {
         // Order
         public string Work_Order_Reference { get; set; }

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Core
 {
     public interface IBatchPipelineStage
     {
-        Task Process(IEnumerable<PropertyBag> bags);
+        Task<IEnumerable<PropertyBag>> Process(IEnumerable<PropertyBag> bags);
     }
 
     class BatchWrapper : IBatchPipelineStage
@@ -17,7 +18,7 @@ namespace Core
             this.stage = stage;
         }
 
-        public async Task Process(IEnumerable<PropertyBag> bags)
+        public async Task<IEnumerable<PropertyBag>> Process(IEnumerable<PropertyBag> bags)
         {
             await stage.Startup();
 
@@ -27,6 +28,23 @@ namespace Core
             }
 
             await stage.TearDown();
+
+            return bags;
+        }
+    }
+
+    class FilterWrapper : IBatchPipelineStage
+    {
+        private readonly IFilter filter;
+
+        public FilterWrapper(IFilter filter)
+        {
+            this.filter = filter;
+        }
+
+        public Task<IEnumerable<PropertyBag>> Process(IEnumerable<PropertyBag> bags)
+        {
+            return Task.FromResult(bags.Where(filter.IsValid));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Core;
 using CSV;
+using RepairsMigrator.Filters;
 using RepairsMigrator.Runners;
 using RepairsMigrator.Stages;
 using Serilog;
@@ -52,6 +53,7 @@ namespace RepairsMigrator
                 .With(new ResolveHierarchyDetails())
                 .With(new FinanceIntegrationStage())
                 .With(new ResolveCommunalStage())
+                .With(new CommunalFilter())
                 .Build();
 #if DEBUG
             await CSVRunner.LoadSheetsForTest();

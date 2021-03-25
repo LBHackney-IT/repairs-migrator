@@ -17,6 +17,11 @@ namespace Core
             return this;
         }
 
+        public PipelineBuilder With(IFilter filter)
+        {
+            this.stages.Add(new FilterWrapper(filter));
+            return this;
+        }
 
         public PipelineBuilder With(IBatchPipelineStage stage)
         {

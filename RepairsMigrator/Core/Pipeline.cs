@@ -17,7 +17,7 @@ namespace Core
         {
             foreach (var stage in stages)
             {
-                await stage.Process(bags);
+                bags = await stage.Process(bags);
             }
         }
 

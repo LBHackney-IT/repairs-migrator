@@ -1,36 +1,89 @@
 ﻿using Core;
+using CsvHelper.Configuration.Attributes;
 
 namespace RepairsMigrator
 {
     class LeaseHolderReportSheet
     {
-        public string Work_Order_Reference { get; set; }
-        public string Request_Reference { get; set; }
-        public string Property_Reference_ { get; set; }
-        public string Master_Block_Ref_ { get; set; }
-        public string Master_Block_Name { get; set; }
-        public string Sub_Block_Ref { get; set; }
-        public string Sub_Block_Name { get; set; }
-        public string Block_Range_Or_Estate { get; set; }
-        public string Description_ { get; set; }
-        public string Clean_Description { get; set; }
+        [Name("Work Order Reference")]
+        public string WorkOrderReference { get; set; }
+
+        [Name("Request Reference")]
+        public string RequestReference { get; set; }
+
+        [Name("Property Reference")]
+        public string PropertyReference { get; set; }
+
+        [Name("Master Block Ref")]
+        public string MasterBlockRef { get; set; }
+
+        [Name("Master Block")]
+        public string MasterBlock { get; set; }
+
+        [Name("Sub Block Ref")]
+        public string SubBlockRef { get; set; }
+
+        [Name("Sub Block")]
+        public string SubBlock { get; set; }
+
+        [Name("Block Range or Estate")]
+        public string BlockRangeOrEstate { get; set; }
+
+        [Name("Description")]
+        public string Description { get; set; }
+
+        [Name("Clean Description")]
+        public string CleanDescription { get; set; }
+
+        [Name("HOC")]
         public string HOC { get; set; }
-        public string Nominal_Code { get; set; }
-        public string Date_Raised { get; set; }
-        public string Completion_Date { get; set; }
-        public string Work_Order_completion_date { get; set; }
-        public string Est_Cost_After_Variation { get; set; }
-        public string Invoice_Number { get; set; }
-        public string Date_Of_Invoice { get; set; }
-        public string Actual_cost_of_invoice { get; set; }
-        public string Level_Description { get; set; }
-        public string Cost_Code { get; set; }
-        public string Corp_Subj_Code { get; set; }
-        public string Local_Subj_Code { get; set; }
-        public string Local_Subj { get; set; }
-        public string Category_Type { get; set; }
-        public string DLO_Split { get; set; }
-        public string Supplier_Name { get; set; }
-        public string Neigh_Area { get; set; }
+
+        [Name("Nominal Code")]
+        public string NominalCode { get; set; }
+
+        [Name("Date Job Raised")]
+        public string DateJobRaised { get; set; }
+
+        [Name("Work Order Completion Date")]
+        public string WorkOrderCompletionDate { get; set; }
+
+        [Name("Date Completed")]
+        public string DateCompleted { get; set; }
+
+        [Name("Estimated Cost After Variation")]
+        public string EstCostAfterVariation { get; set; }
+
+        [Name("Invoice Number")]
+        public string InvoiceNumber { get; set; }
+
+        [Name("Date of Invoice")]
+        public string DateOfInvoice { get; set; }
+
+        [Name("Actual Cost of Invoice")]
+        public string ActualCostOfInvoice { get; set; }
+
+        [Name("Level Description")]
+        public string LevelDescription { get; set; }
+
+        [Name("Corporate Subjective Code")]
+        public string CorpSubjectiveCode { get; set; }
+
+        [Name("Local Subjective Code")]
+        public string LocalSubjectiveCode { get; set; }
+
+        [Name("Local Subjective")]
+        public string LocalSubjective { get; set; }
+
+        [Name("Category Type")]
+        public string CategoryType { get; set; }
+
+        [Name("DLO Split")]
+        public string DLOSplit { get; set; }
+
+        [Name("Supplier Name")]
+        public string SupplierName { get; set; }
+
+        [Name("NeighArea")]
+        public string NeighArea { get; set; }
     }
 }
