@@ -13,7 +13,7 @@ namespace RepairsMigrator.Stages
         {
             { "Door Entry", "" },
             { "Lightning Protection", "" },
-            { "Lift Breakdown", "" },
+            { "Lift Breakdown", "ELA" },
             { "Fire Alarm/AOV", "" },
             { "Electrical Supplies", "" },
             { "Electric Heating", "" },
