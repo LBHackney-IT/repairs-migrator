@@ -1,11 +1,15 @@
 ﻿using Core;
 using CSV;
+using DB;
+using Mapster;
 using RepairsMigrator.Filters;
 using RepairsMigrator.Runners;
+using RepairsMigrator.SheetModels;
 using RepairsMigrator.Stages;
 using Serilog;
 using Serilog.Events;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -58,6 +62,9 @@ namespace RepairsMigrator
                 .With(new FindPropertyParentsStage())
                 .With(new ResolveSupplierNameStage())
                 .Build();
+
+            IList<RepairsHubDBModel> dbData = await RepairsGateway.GetRepairsData();
+            pipeline.In(dbData.Adapt<IList<RepairsHubModel>>());
 #if DEBUG
             await CSVRunner.LoadSheetsForTest();
             await CSVRunner.ProcessCSVs(pipeline);

@@ -44,16 +44,14 @@ namespace DB
                 await cmd.ExecuteNonQueryAsync();
             }
 
-            using (var writer = conn.BeginBinaryImport("COPY migration.address_store (address) FROM STDIN (FORMAT BINARY)"))
+            using var writer = conn.BeginBinaryImport("COPY migration.address_store (address) FROM STDIN (FORMAT BINARY)");
+            foreach (var value in addresses)
             {
-                foreach (var value in addresses)
-                {
-                    writer.StartRow();
-                    writer.Write(value);
-                }
-
-                writer.Complete();
+                writer.StartRow();
+                writer.Write(value);
             }
+
+            writer.Complete();
         }
 
         public class PropRefModel
