@@ -110,6 +110,7 @@ namespace Google
         {
             string result = Regex.Replace(h, @"\(.*\)", string.Empty);
             result = Regex.Replace(result, @"[\.\?\-:\,\\\/']", string.Empty);
+            result = Regex.Replace(result, @"£", "Pounds");
             result = Regex.Replace(result.Trim(), @"\s+", "_");
             return result;
         }

@@ -8,7 +8,7 @@ namespace RepairsMigrator
             where TValue : class
         {
             if (source.TryGetValue(key, out var value)
-                && !string.IsNullOrWhiteSpace(value.ToString()))
+                && !string.IsNullOrWhiteSpace(value?.ToString()))
             {
                 return value.ToString();
             }

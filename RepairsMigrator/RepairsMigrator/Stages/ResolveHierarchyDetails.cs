@@ -16,7 +16,7 @@ namespace RepairsMigrator.Stages
             var gateway = new PropertyGateway();
 
             var references = bags
-                .Where(b => b.ContainsKey(Keys.Property_Reference) && !string.IsNullOrWhiteSpace(b[Keys.Property_Reference].ToString()))
+                .Where(b => b.ContainsKey(Keys.Property_Reference) && !string.IsNullOrWhiteSpace(b[Keys.Property_Reference]?.ToString()))
                 .Select(b => b[Keys.Property_Reference].ToString())
                 .Distinct();
 
@@ -34,12 +34,12 @@ namespace RepairsMigrator.Stages
 
         private static void AttachHierarchy(PropertyBag bag, Dictionary<string, HierarchyModel> details)
         {
-            if (!bag.ContainsKey(Keys.Property_Reference) || string.IsNullOrWhiteSpace(bag[Keys.Property_Reference].ToString()))
+            if (!bag.ContainsKey(Keys.Property_Reference) || string.IsNullOrWhiteSpace(bag[Keys.Property_Reference]?.ToString()))
             {
                 bag.AddError(ErrorKeys.NoPropRefForHierarchy);
                 return;
             }
-            var propRef = bag[Keys.Property_Reference].ToString();
+            var propRef = bag[Keys.Property_Reference]?.ToString();
 
             if (details.TryGetValue(propRef.Trim(), out var data))
             {

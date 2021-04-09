@@ -14,8 +14,10 @@ namespace RepairsMigrator.Stages
         {
             var addresses = bags
                 .Where(b =>
-                    !b.ContainsKey(Keys.Property_Reference)
-                    || string.IsNullOrWhiteSpace(b[Keys.Property_Reference].ToString()))
+                        !b.ContainsKey(Keys.Property_Reference)
+                    || string.IsNullOrWhiteSpace(b[Keys.Property_Reference]?.ToString())
+                    || !int.TryParse(b[Keys.Property_Reference].ToString(), out var _))
+                .Where(b => !string.IsNullOrWhiteSpace(b[Keys.Short_Address]?.ToString()))
                 .Select(b => b[Keys.Short_Address].ToString())
                 .Distinct();
 

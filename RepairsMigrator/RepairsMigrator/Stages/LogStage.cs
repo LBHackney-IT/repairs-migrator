@@ -10,9 +10,16 @@ namespace RepairsMigrator.Stages
 {
     class LogStage : IBatchPipelineStage
     {
+        private readonly string message;
+
+        public LogStage(string message)
+        {
+            this.message = message;
+        }
+
         public Task<IEnumerable<PropertyBag>> Process(IEnumerable<PropertyBag> bags)
         {
-            Log.Information("Processing {count} Records", bags.Count());
+            Log.Information(message, bags.Count());
 
             return Task.FromResult(bags);
         }

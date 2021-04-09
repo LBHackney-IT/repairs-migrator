@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -47,6 +48,70 @@ namespace DB
             }
 
             return result;
+        }
+
+        public static async Task StoreRepairsData(IEnumerable newData)
+        {
+            var connectionString = Configuration.Instance["ConnectionString"];
+
+            await using var conn = new NpgsqlConnection(connectionString);
+            await conn.OpenAsync();
+            await SetupTable(conn);
+            SendRepairsData(conn, newData);
+        }
+
+        private static void SendRepairsData(NpgsqlConnection conn, IEnumerable values)
+        {
+            using (var writer = conn.BeginBinaryImport(@"
+                                                        COPY migration.interrim_data (
+                                                                            description,
+                                                                            trade_code,
+                                                                            priority_code,
+                                                                            property_reference,
+                                                                            contractor_reference,
+                                                                            date_raised,
+                                                                            date_completed,
+                                                                            completion_description,
+                                                                            appointment_date,
+                                                                            appointment_time,
+                                                                            sor_code
+                                                        ) FROM STDIN (FORMAT BINARY)"))
+            {
+                foreach (var value in values)
+                {
+                    writer.StartRow();
+                    writer.Write(value);
+                }
+
+                writer.Complete();
+            }
+        }
+
+        private static async Task SetupTable(NpgsqlConnection conn)
+        {
+            await using (var cmd = new NpgsqlCommand(@"
+                CREATE TABLE IF NOT EXISTS migration.interrim_data (
+                    description text,
+                    trade_code text,
+                    priority_code text,
+                    property_reference text,
+                    contractor_reference text,
+                    date_raised text,
+                    date_completed text,
+                    completion_description text,
+                    appointment_date text,
+                    appointment_time text,
+                    sor_code json
+                );
+                ", conn))
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+
+            await using (var cmd = new NpgsqlCommand(@"TRUNCATE migration.interrim_data", conn))
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
     }
 

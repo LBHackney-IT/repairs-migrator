@@ -1,6 +1,8 @@
 ﻿using Core;
 using CSV;
 using DB;
+using Google;
+using Google.Apis.Auth.OAuth2;
 using Mapster;
 using RepairsMigrator.Filters;
 using RepairsMigrator.Runners;
@@ -10,7 +12,9 @@ using Serilog;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RepairsMigrator
@@ -41,7 +45,6 @@ namespace RepairsMigrator
 
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
                 .WriteTo.Console()
 #if DEBUG
                 .WriteTo.File(logFile)
@@ -50,29 +53,26 @@ namespace RepairsMigrator
 #endif
                 .CreateLogger();
 
-            var pipeline = new PipelineBuilder()
-                .With(new LogStage())
-                //.With(new LoadAddressStoreStage())
-                .With(new WorkOrderResolutionStage())
-                .With(new ResolveAddressStage())
-                .With(new ResolveHierarchyDetails())
-                .With(new FinanceIntegrationStage())
-                .With(new ResolveCommunalStage())
-                .With(new CommunalFilter())
-                .With(new FindPropertyParentsStage())
-                .With(new ResolveSupplierNameStage())
-                .Build();
-
-            IList<RepairsHubDBModel> dbData = await RepairsGateway.GetRepairsData();
-            pipeline.In(dbData.Adapt<IList<RepairsHubModel>>());
-#if DEBUG
-            await CSVRunner.LoadSheetsForTest();
-            await CSVRunner.ProcessCSVs(pipeline);
-#else
-            await GoogleRunner.ProcessGoogleSheets(pipeline);
-#endif
+            await DloDataAttacher.Run();
 
             Log.CloseAndFlush();
         }
+
+        //private static async Task<SheetManager> FinanceData(Pipeline pipeline)
+        //{
+            
+        //    IEnumerable<FinanceData> raw = await manager.LoadSheet<FinanceData>("17PrFYPWJ0_C_il8XwCHXuovTEZdP1iS6aU9SEWomoh8", "PAYMENTS", 2);
+
+        //    pipeline.In(raw.Where(r => !string.IsNullOrWhiteSpace(r.Invoice_No)).Where(
+        //        k =>
+        //        {
+
+        //            bool hasDate = DateTime.TryParseExact(k.Invoice_date, "dd/MM/yyyy", null, DateTimeStyles.None, out var date);
+        //            return !(int.TryParse(k.UH_job_No, out var jobno) && jobno >= 1000000 && jobno <= 99999999)
+        //            && hasDate && date > new DateTime(2020, 9, 1);
+        //        }
+        //        ));
+        //    return manager;
+        //}
     }
 }

@@ -117,27 +117,4 @@ namespace RepairsMigrator.Stages
         [PropertyKey(Keys.Actual_cost_of_invoice)]
         public string InvoiceCost { get; set; }
     }
-
-    public class FinanceData
-    {
-        public string Line_No { get; set; }
-        public string Supplier_No { get; set; }
-        public string CedAr_Supplier { get; set; }
-        public string Cert_No { get; set; }
-        public string Invoice_No { get; set; }
-        public string Invoice_date { get; set; }
-        public string UH_job_No { get; set; }
-        public string Property_ref { get; set; }
-        public string Address { get; set; }
-        public string Area_Office { get; set; }
-        public string Cost_Centre { get; set; }
-        public string Corp_subj { get; set; }
-        public string Local_subj { get; set; }
-        public string Amount { get; set; }
-        public string Month { get; set; }
-        public string SCA { get; set; }
-        public string Contract { get; set; }
-        public string Name_of_CPA { get; set; }
-        public string Job_Description { get; set; }
-    }
 }

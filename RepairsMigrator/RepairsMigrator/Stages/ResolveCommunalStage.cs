@@ -60,7 +60,8 @@ namespace RepairsMigrator.Stages
                 return Task.CompletedTask;
             }
 
-            if (communalKeywords.Any(kw => model.Description.ToLower().Contains(kw.ToLower())))
+            if (communalKeywords.Any(kw => !string.IsNullOrWhiteSpace(model.Description) 
+                                            && model.Description.ToLower().Contains(kw.ToLower())))
             {
                 model.IsCommunal = TRUE;
                 model.CommunalReason = "Found Communal Keywork\n in job description";
