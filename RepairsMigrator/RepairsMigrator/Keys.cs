@@ -24,7 +24,7 @@
         public const string HOC = "HOC";
         public const string Nominal_Code = "Nominal_Code";
         public const string Completion_Date = "Completion_Date";
-        public const string Work_Order_completion_date = "Work_Order_completion_date";
+        public const string ProFormaMarker = "ProFormaMarker";
         public const string Est_Cost_After_Variation = "Est_Cost_After_Variation";
         public const string Invoice_Number = "Invoice_Number";
         public const string Date_Of_Invoice = "Date_Of_Invoice";
@@ -32,6 +32,7 @@
         public const string Level_Description = "Level_Description";
         public const string Cost_Code = "Cost_Code";
         public const string Corp_Subj_Code = "Corp_Subj_Code";
+        public const string Corp_Subj = "Corp_Subj";
         public const string Local_Subj_Code = "Local_Subj_Code";
         public const string Local_Subj = "Local_Subj";
         public const string Category_Type = "Category_Type";
@@ -40,6 +41,7 @@
         public const string Neigh_Area = "Neigh_Area";
         public const string SourceRow = "SourceRow";
         public const string SourceDescription = "SourceDescription";
+        public const string Manager = "Manager";
 
         // Intermediate  Keys (Stages need to map these to target keys)
         public const string Date = "Date";
@@ -63,5 +65,6 @@
         public const string Parent_Reference = "Parent_Reference";
         public const string Grandparent_Address = "Grandparent_Address";
         public const string Grandparent_Reference = "Grandparent_Reference";
+        public const string Paper_Order = "Paper_Order";
     }
 }

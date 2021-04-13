@@ -86,7 +86,6 @@ namespace RepairsMigrator.SheetModels
         public string Contractor_Job_Status_Complete_or_in_Progress { get; set; }
         
         [PropertyKey(Keys.Completion_Date)]
-        [PropertyKey(Keys.Work_Order_completion_date)]
         public string Date_Completed { get; set; }
     }
 

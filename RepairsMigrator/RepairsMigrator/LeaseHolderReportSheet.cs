@@ -5,111 +5,59 @@ namespace RepairsMigrator
 {
     class LeaseHolderReportSheet
     {
-        [PropertyKey(Keys.Work_Order_Reference)]
-        [Name("Work Order Reference")]
-        public string WorkOrderReference { get; set; }
+        [PropertyKey(Keys.Cost_Code)]
+        [Name("Cost Code")]
+        public string Cost_Code { get; set; }
 
-        [PropertyKey(Keys.Request_Reference)]
-        [Name("Request Reference")]
-        public string RequestReference { get; set; }
+        [PropertyKey(Keys.Corp_Subj_Code)]
+        [Name("Corporate Subjective Code")]
+        public string Corporate_Subjective_Code { get; set; }
+
+        [Name("Description of Subjective code")]
+        public string Description_of_Subjective_code { get; set; } = string.Empty;
 
         [PropertyKey(Keys.Property_Reference)]
         [Name("Property Reference")]
-        public string PropertyReference { get; set; }
+        public string Property_Reference { get; set; }
 
-        [Name("Master Block Ref")]
-        [PropertyKey(Keys.Grandparent_Reference)]
-        public string MasterBlockRef { get; set; }
-
-        [Name("Master Block")]
-        [PropertyKey(Keys.Grandparent_Address)]
-        public string MasterBlock { get; set; }
-
-        [Name("Sub Block Ref")]
-        [PropertyKey(Keys.Parent_Reference)]
-        public string SubBlockRef { get; set; }
-
-        [Name("Sub Block")]
-        [PropertyKey(Keys.Parent_Address)]
-        public string SubBlock { get; set; }
-
-        [Name("Block Range or Estate")]
         [PropertyKey(Keys.Short_Address)]
-        public string BlockRangeOrEstate { get; set; }
+        [Name("Address")]
+        public string Address { get; set; }
 
-        [Name("Description")]
-        [PropertyKey(Keys.Description)]
-        public string Description { get; set; }
+        [PropertyKey(Keys.Parent_Address)]
+        [Name("Block Range or Estate")]
+        public string Block_Range_or_Estate { get; set; }
 
-        [Name("Clean Description")]
-        public string CleanDescription { get; set; }
-
-        [Name("HOC")]
-        [PropertyKey(Keys.HOC)]
-        public string HOC { get; set; }
-
-        [Name("Nominal Code")]
-        [PropertyKey(Keys.Nominal_Code)]
-        public string NominalCode { get; set; }
-
-        [Name("Date Job Raised")]
         [PropertyKey(Keys.Created_Date)]
-        public string DateJobRaised { get; set; }
+        [Name("Date Raised")]
+        public string Date_Raised { get; set; }
 
-        [Name("Work Order Completion Date")]
-        [PropertyKey(Keys.Work_Order_completion_date)]
-        public string WorkOrderCompletionDate { get; set; }
+        [PropertyKey(Keys.Description)]
+        [Name("Description of works")]
+        public string Description_of_works { get; set; }
 
-        [Name("Date Completed")]
         [PropertyKey(Keys.Completion_Date)]
-        public string DateCompleted { get; set; }
+        [Name("Date Completed")]
+        public string Date_Completed { get; set; }
 
-        [Name("Estimated Cost After Variation")]
-        [PropertyKey(Keys.Est_Cost_After_Variation)]
-        public string EstCostAfterVariation { get; set; }
-
-        [Name("Invoice Number")] //Finance
-        [PropertyKey(Keys.Invoice_Number)]
-        public string InvoiceNumber { get; set; }
-
-        [Name("Date of Invoice")] //Finance
-        [PropertyKey(Keys.Date_Of_Invoice)]
-        public string DateOfInvoice { get; set; }
-
-        [Name("Actual Cost of Invoice")] //Finance
         [PropertyKey(Keys.Actual_cost_of_invoice)]
-        public string ActualCostOfInvoice { get; set; }
+        [Name("Actual cost after variation")]
+        public string Actual_cost_after_variation { get; set; }
 
-        [Name("Level Description")]
-        [PropertyKey(Keys.Level_Description)]
-        public string LevelDescription { get; set; }
+        [PropertyKey(Keys.Manager)]
+        [Name("Manager responsible for work")]
+        public string Manager_responsible_for_work { get; set; }
 
-        [Name("Corporate Subjective Code")] //Finance
-        [PropertyKey(Keys.Corp_Subj_Code)]
-        public string CorpSubjectiveCode { get; set; }
+        [PropertyKey(Keys.Original_Address)]
+        [Name("Original Address")]
+        public string Original_Address { get; set; }
 
-        [Name("Local Subjective Code")] //Finance
-        [PropertyKey(Keys.Local_Subj_Code)]
-        public string LocalSubjectiveCode { get; set; }
+        [PropertyKey(Keys.Short_Address)]
+        [Name("Matching Universal Housing Address")]
+        public string UH_Address { get; set; }
 
-        [Name("Local Subjective")] //Finance
-        [PropertyKey(Keys.Local_Subj)]
-        public string LocalSubjective { get; set; }
-
-        [Name("Category Type")]
-        [PropertyKey(Keys.Category_Type)]
-        public string CategoryType { get; set; }
-
-        [Name("DLO Split")]
-        [PropertyKey(Keys.DLO_Split)]
-        public string DLOSplit { get; set; }
-
-        [Name("Supplier Name")]
-        [PropertyKey(Keys.Supplier_Name)]
-        public string SupplierName { get; set; }
-
-        [Name("NeighArea")]
-        [PropertyKey(Keys.Neigh_Area)]
-        public string NeighArea { get; set; }
+        [PropertyKey(Keys.Paper_Order)]
+        [Name("Original Completion Order")]
+        public string Paper_Order { get; set; }
     }
 }

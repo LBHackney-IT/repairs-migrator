@@ -35,7 +35,6 @@ namespace RepairsMigrator.SheetModels
         public string Time { get; set; }
 
         [PropertyKey(Keys.Completion_Date)]
-        [PropertyKey(Keys.Work_Order_completion_date)]
         public string Completed_Date { get; set; }
 
         [PropertyKey(Keys.Description)]

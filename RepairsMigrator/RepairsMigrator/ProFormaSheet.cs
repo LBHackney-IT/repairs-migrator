@@ -4,6 +4,7 @@ namespace RepairsMigrator
 {
     public class ProFormaSheet
     {
+        [PropertyKey(Keys.Created_Date)]
         public string Reference_number_of_proforma { get; set; }
 
         [PropertyKey(Keys.Trade)]
@@ -13,7 +14,6 @@ namespace RepairsMigrator
         public string Priority { get; set; }
         public string Logging_number { get; set; }
 
-        [PropertyKey(Keys.Work_Order_completion_date)]
         [PropertyKey(Keys.Completion_Date)]
         public string Date_of_response { get; set; }
 
@@ -26,6 +26,8 @@ namespace RepairsMigrator
         public string Surname { get; set; }
         public string Action_by_Op { get; set; }
         public string Comments_from_op { get; set; }
+
+        [PropertyKey(Keys.Paper_Order)]
         public string Scanned_copy_location_on_Google_Drive { get; set; }
         public string Material_used { get; set; }
         public string Requisition_number { get; set; }
