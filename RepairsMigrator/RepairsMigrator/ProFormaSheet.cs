@@ -14,6 +14,9 @@ namespace RepairsMigrator
         public string Priority { get; set; }
         public string Logging_number { get; set; }
 
+        [PropertyKey(Keys.Description)]
+        public string Job_desciption { get; set; }
+
         [PropertyKey(Keys.Completion_Date)]
         public string Date_of_response { get; set; }
 

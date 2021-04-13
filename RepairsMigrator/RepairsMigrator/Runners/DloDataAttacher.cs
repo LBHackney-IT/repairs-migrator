@@ -19,7 +19,7 @@ namespace RepairsMigrator.Runners
         public static async Task Run()
         {
             var manager = new SheetManager("RepairsMigration", GoogleCredential.FromFile("Resources/creds.json"));
-            var pf = await manager.LoadSheet<ProFormaSheet>("1k_C5UtLHGRDioNfORP8AzKR6ouLcP95c9huZVzNt86g", "Summary of all jobs");
+            var pf = await manager.LoadSheet<ProFormaSheet>("1DU6OA7yMAB-jPTdhBhRMC9BfyOw8Ad83CdKdhkhI3s0", "Summary of all  jobs on sheet tabs");
             var dlo = await manager.LoadSheet<DLOSheet>("1i9q42Kkbugwi4f2S4zdyid2ZjoN1XLjuYvqYqfHyygs", "Form responses 1");
 
             var proFormaStage = new AttachDataStage<DLOSheet, ProFormaAttacher>(dlo.ToList(),
@@ -27,11 +27,12 @@ namespace RepairsMigrator.Runners
                 pf => NormaliseDate(pf.Timestamp),
                 (model, data) =>
                 {
-                    model.Description = data.Job_description;
                     model.Marker = "True";
                     model.Address = data.Address_of_repair;
                     model.OAddress = data.Address_of_repair;
                     model.PropRef = data.UH_Property_Reference;
+
+                    if (string.IsNullOrWhiteSpace(model.Description)) model.Description = data.Job_description;
                 });
 
             var dateFormatter = new FormatterStage(Keys.Created_Date, date =>
@@ -43,7 +44,7 @@ namespace RepairsMigrator.Runners
                     return result.ToString("dd/MM/yyyy HH:mm:ss");
                 }
 
-                return string.Empty;
+                return date;
             });
 
             var pipeline = new PipelineBuilder()
