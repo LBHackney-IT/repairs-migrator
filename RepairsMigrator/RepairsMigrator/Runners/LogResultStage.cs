@@ -13,11 +13,11 @@ namespace RepairsMigrator.Runners
         {
             var list = bags.ToList();
             int overallCount = list.Count;
-            int countWithCost = list.Count(b => !string.IsNullOrWhiteSpace(b.GetMaybe(Keys.Actual_cost_of_invoice)));
+            int countWithCost = list.Count(b => !string.IsNullOrWhiteSpace(b.GetMaybe(Keys.ProFormaMarker)));
             double costPercentage = ((double)countWithCost / overallCount) * 100;
 
             Log.Information("Result Count {count}", overallCount);
-            Log.Information("Result With Cost {count} ({percent}%)", countWithCost, Math.Round(costPercentage, 2));
+            Log.Information("Result With Pro forma Data {count} ({percent}%)", countWithCost, Math.Round(costPercentage, 2));
 
             return Task.FromResult(bags);
         }
