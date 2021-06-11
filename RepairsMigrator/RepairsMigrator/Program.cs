@@ -4,9 +4,7 @@ using DB;
 using Google;
 using Google.Apis.Auth.OAuth2;
 using Mapster;
-using RepairsMigrator.Filters;
 using RepairsMigrator.Runners;
-using RepairsMigrator.SheetModels;
 using RepairsMigrator.Stages;
 using Serilog;
 using Serilog.Events;
@@ -45,6 +43,7 @@ namespace RepairsMigrator
 
 
             Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
                 .WriteTo.Console()
 #if DEBUG
                 .WriteTo.File(logFile)

@@ -2,14 +2,10 @@
 using CSV;
 using Google;
 using Google.Apis.Auth.OAuth2;
-using RepairsMigrator.Filters;
-using RepairsMigrator.SheetModels;
+using RepairsMigrator.JobTrackerModels;
 using RepairsMigrator.Stages;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RepairsMigrator.Runners
@@ -19,91 +15,53 @@ namespace RepairsMigrator.Runners
         public static async Task Run()
         {
             var manager = new SheetManager("RepairsMigration", GoogleCredential.FromFile("Resources/creds.json"));
-            var pf = await manager.LoadSheet<ProFormaSheet>("1DU6OA7yMAB-jPTdhBhRMC9BfyOw8Ad83CdKdhkhI3s0", "Summary of all  jobs on sheet tabs");
-            var dlo = await manager.LoadSheet<DLOSheet>("1i9q42Kkbugwi4f2S4zdyid2ZjoN1XLjuYvqYqfHyygs", "Form responses 1");
-
-            var proFormaStage = new AttachDataStage<DLOSheet, ProFormaAttacher>(dlo.ToList(),
-                pf => NormaliseDate(pf.DateCreated),
-                pf => NormaliseDate(pf.Timestamp),
-                (model, data) =>
-                {
-                    model.Marker = "True";
-                    model.Address = data.Address_of_repair;
-                    model.OAddress = data.Address_of_repair;
-                    model.PropRef = data.UH_Property_Reference;
-
-                    if (string.IsNullOrWhiteSpace(model.Description)) model.Description = data.Job_description;
-                });
-
-            var dateFormatter = new FormatterStage(Keys.Created_Date, date =>
-            {
-                if (string.IsNullOrEmpty(date)) return string.Empty;
-
-                if (DateTime.TryParseExact(date, "ddMMyHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
-                {
-                    return result.ToString("dd/MM/yyyy HH:mm:ss");
-                }
-
-                return date;
-            });
+            var dlo = await manager.LoadSheet<DLO>("1L09sWeWShUu2_fZGSLrAkytAvTIWQwihjTfPbWVEBN0", "1. DLO work completion", 1);
+            var coomunal = await manager.LoadSheet<Communal>("1Jpgsx2JJDlcWpt9vlrEVZbiDpIg2etDuxSn3gQl0dpI", "1. Capital & communal works not matched items", 2);
+            var pest = await manager.LoadSheet<PestControl>("1Jpgsx2JJDlcWpt9vlrEVZbiDpIg2etDuxSn3gQl0dpI", "2. Relevant Pest control", 1);
+            var cctv = await manager.LoadSheet<CCTV>("1Jpgsx2JJDlcWpt9vlrEVZbiDpIg2etDuxSn3gQl0dpI", "3. CCTV Relevant not matched", 1);
+            var scaffolding = await manager.LoadSheet<Scaffolding>("1Jpgsx2JJDlcWpt9vlrEVZbiDpIg2etDuxSn3gQl0dpI", "4. Pride Scaffolding Relevant", 1);
 
             var pipeline = new PipelineBuilder()
                 .With(new LogStage("Processing {count} Records"))
-                .With(proFormaStage)
-                //.With(new LoadAddressStoreStage())
+                .With(new LoadAddressStoreStage())
                 .With(new PadPropertyReferenceStage())
                 .With(new ResolveAddressStage())
                 .With(new ResolveHierarchyDetails())
-                .With(new ResolveCommunalStage())
-                .With(new LogStage("Filtering Communal Records"))
-                .With(new LogStage("Translating property hierarchy to relative parents"))
                 .With(new FindPropertyParentsStage())
-                .With(dateFormatter)
-                .With(new CommunalFilter())
-                .With(new LogResultStage())
                 .Build();
 
-            pipeline.In(pf);
+
+            pipeline.In(dlo);
+            pipeline.In(coomunal);
+            pipeline.In(pest);
+            pipeline.In(cctv);
+            pipeline.In(scaffolding);
 
             await pipeline.Run();
 
-            var data_out = pipeline.Out<LeaseHolderReportSheet>();
+            var outDlo = pipeline.Out<DLO>();
+            var outCom = pipeline.Out<Communal>();
+            var outPest = pipeline.Out<PestControl>();
+            var outCCTV = pipeline.Out<CCTV>();
+            var outScaf = pipeline.Out<Scaffolding>();
 
-            CSVSaver.SaveCsv("out_leaseholder.csv", data_out);
+            CSVSaver.SaveCsv("DLO work completion.csv", outDlo.Where(r => r.Marker == "DLO"));
+            CSVSaver.SaveCsv("Capital & communal works not matched items.csv", outCom.Where(r => r.Marker == "COMMUNAL"));
+            CSVSaver.SaveCsv("Relevant Pest control.csv", outPest.Where(r => r.Marker == "PEST"));
+            CSVSaver.SaveCsv("CCTV Relevant not matched.csv", outCCTV.Where(r => r.Marker == "CCTV"));
+            CSVSaver.SaveCsv("Pride Scaffolding Relevant.csv", outScaf.Where(r => r.Marker == "SCAF"));
         }
 
-        private static string NormaliseDate(string dateCreated)
+        public static async Task RunPipeline<T>(Pipeline pipeline, IEnumerable<T> data, string filename)
+            where T : class, new()
         {
-            if (string.IsNullOrWhiteSpace(dateCreated)) return null;
+            pipeline.In(data);
 
-            string cleanedDate = dateCreated.Replace("/202", "/2").Replace("/201", "/1")
-                            .Replace("/", string.Empty).Replace(" ", string.Empty).Replace(":", string.Empty)
-                            .Trim();
+            await pipeline.Run();
 
-            if (long.TryParse(cleanedDate, out _))
-                return cleanedDate;
-            else
-                return null;
-        }
+            var outData = pipeline.Out<T>();
 
-        public class ProFormaAttacher
-        {
-            [PropertyKey(Keys.Created_Date)]
-            public string DateCreated { get; set; }
-
-            [PropertyKey(Keys.Description)]
-            public string Description { get; set; }
-
-            [PropertyKey(Keys.Short_Address)]
-            public string Address { get; set; }
-            [PropertyKey(Keys.Original_Address)]
-            public string OAddress { get; set; }
-
-            [PropertyKey(Keys.Property_Reference)]
-            public string PropRef { get; set; }
-
-            [PropertyKey(Keys.ProFormaMarker)]
-            public string Marker { get; set; }
+            CSVSaver.SaveCsv(filename, outData);
         }
     }
 }

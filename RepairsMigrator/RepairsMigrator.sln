@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB.Test", "DB.Test\DB.Test.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepairsMigrator.Test", "RepairsMigrator.Test\RepairsMigrator.Test.csproj", "{DB27038B-31BD-4534-A155-C5BDA69E8A93}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SheetSplitter", "SheetSplitter\SheetSplitter.csproj", "{8051BCD9-4AFD-4AFE-8B31-AB697E64F406}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{DB27038B-31BD-4534-A155-C5BDA69E8A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB27038B-31BD-4534-A155-C5BDA69E8A93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB27038B-31BD-4534-A155-C5BDA69E8A93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8051BCD9-4AFD-4AFE-8B31-AB697E64F406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8051BCD9-4AFD-4AFE-8B31-AB697E64F406}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8051BCD9-4AFD-4AFE-8B31-AB697E64F406}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8051BCD9-4AFD-4AFE-8B31-AB697E64F406}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
